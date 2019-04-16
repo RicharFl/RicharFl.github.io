@@ -1,0 +1,582 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Pr&aacute;ctica 3: Se&ntilde;ales en Tiempo Continuo</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-16"><meta name="DC.source" content="publis.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 3: Se&ntilde;ales en Tiempo Continuo</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Integrantes</a></li><li><a href="#2">Objetivos</a></li><li><a href="#3">Introducci&oacute;n</a></li><li><a href="#4">Fun1</a></li><li><a href="#6">Funci&oacute;n que grafique de <img src="publis_eq13388983217490764793.png" alt="$R\rightarrow R$"></a></li><li><a href="#7">Funci&oacute;n que grafique de <img src="publis_eq17269984110883796952.png" alt="$R\rightarrow R^2$"></a></li><li><a href="#11">Operaciones de la secci&oacute;n M1.1 a M1.4 del Lathi</a></li><li><a href="#15">Problema 1.2.2 Lathi</a></li><li><a href="#17">Funci&oacute;n de Energ&iacute;a</a></li><li><a href="#21">Funci&oacute;n de Potencia</a></li><li><a href="#24">Referencias</a></li></ul></div><h2 id="1">Integrantes</h2><p>Flores Lima Jos&eacute; Ricardo</p><p>Medina Bautista Sergio Cristian</p><p>Plata Montejano Lissete</p><h2 id="2">Objetivos</h2><div><ul><li>Manipulaci&oacute;n b&aacute;sica de MATLAB</li><li>Gr&aacute;ficas de se&ntilde;ales reales y complejas continuas</li><li>Transformaci&oacute;n de se&ntilde;ales continuas (escalamientos y traslaciones)</li><li>Calculo de energ&iacute;a y potencia de se&ntilde;ales continuas</li></ul></div><h2 id="3">Introducci&oacute;n</h2><p>Matlab es un lenguaje de programaci&oacute;n dedicado al c&aacute;lculo matem&aacute;tico y t&eacute;cnico. Su desarrollo comienza en los a&ntilde;os 70 por Cleve Moler, qui&eacute;n buscaba una forma simple al acceso del software matricial desarrollado en UNIX LINPACK (de LINear equations PACKage) y EISPACK (de EIgenvalue Subroutines PACKage). El continuar con el proyecto de MATrix LABoratory (MATLAB) lo llevo a fundar MathWorks, empresa que hoy en d&iacute;a contin&uacute;a construyendo las diferentes herramientas que usa Matlab para sus c&aacute;lculos <a href="https://es.mathworks.com/academia.html?s_tid=gn_acad">curso</a>. Regularmente se menciona la necesidad de comprar la licencia para hacer uso de Matlab como una de sus principales desventajas.</p><p>Si requerimos la misma funcionalidad y operaciones que Matlab, podemos recurrir a <a href="https://www.gnu.org/software/octave/about.html">Octave</a>. Octave fue desarrollada con el objetivo de ser parecido a Matlab, es por eso que, en general, su motor de funcionamiento es el mismo. De manera que puedes trabajar en Octave de la misma forma en que lo har&iacute;as en Matlaba, teniendo solo algunas variantes en sintaxis <a href="https://miriadax.net/web/matlab-y-octave-para-ingenieros-y-cientificos">curso</a>.</p><p><a href="https://www.python.org/about/">Python</a> se desarrolla bajo una licencia de c&oacute;digo abierto aprobada por OSI, por lo que se puede usar y distribuir libremente, incluso para uso comercial. Python es una herramienta que puede ser utilizada en diferentes contextos, solo requieres de utilizar las bibliotecas necesarias y conocer la sintaxis. Si bien, puramente no tienes el mismo nivel de operacionalidad que en Matlab, utilizando librer&iacute;as como, puedes darle un uso bastante parecido. Adem&aacute;s de que nativamente contiene alta funcionalidad en crear gr&aacute;ficas y cosas as&iacute;. Quiz&aacute; una de las desventajas es que no existe una &#8220;columna&#8221; de donde puedas tomar la funcionalidad que necesitas, de manera que si necesitas implementar algo puede que la documentaci&oacute;n sea escaza <a href="https://codigofacilito.com/videos/1-curso-python-introduccion">cursos</a>.1</p><h2 id="4">Fun1</h2><p>Funci&oacute;n que recibe como parametros 'a' y 'w', regresa la evaluaci&oacute;n de la funci&oacute;n <img src="publis_eq01407365636722940873.png" alt="$F(\omega)=a/(a^2+\omega^2)$"></p><pre class="language-matlab"><span class="keyword">function</span> [F] = fun1 (w, a)
+    F = a./(a.^2 + w.^2);
+<span class="keyword">end</span>
+</pre><h2 id="6">Funci&oacute;n que grafique de <img src="publis_eq13388983217490764793.png" alt="$R\rightarrow R$"></h2><p>Grafica de la funci&oacute;n 1/(1^2+w^2)</p><pre class="codeinput">syms <span class="string">w</span>
+grafReal(1/(1^2+w^2), w, -2, 2)
+</pre><img vspace="5" hspace="5" src="publis_01.png" alt=""> <h2 id="7">Funci&oacute;n que grafique de <img src="publis_eq17269984110883796952.png" alt="$R\rightarrow R^2$"></h2><p>Grafica de la transformada de Fourier</p><pre class="codeinput">syms <span class="string">t</span>
+grafComplejo( fourier(exp(-2*t)*heaviside(t)), w, -10, 10)
+</pre><img vspace="5" hspace="5" src="publis_02.png" alt=""> <p>Grafica de f(t)</p><pre class="codeinput">grafReal(exp(-2*t)*heaviside(t), t, -1, 5)
+</pre><img vspace="5" hspace="5" src="publis_03.png" alt=""> <p>Espectro de Magnitud</p><pre class="codeinput">grafReal( abs(fourier(exp(-2*t)*heaviside(t))), w, -10, 10)
+</pre><img vspace="5" hspace="5" src="publis_04.png" alt=""> <p>Espectro de Fase</p><pre class="codeinput">grafReal( angle(fourier(exp(-2*t)*heaviside(t))), w, -10, 10)
+</pre><img vspace="5" hspace="5" src="publis_05.png" alt=""> <h2 id="11">Operaciones de la secci&oacute;n M1.1 a M1.4 del Lathi</h2><p>M1.1 Inline Functions</p><pre class="codeinput">f=@(t) exp(-t).*cos(2*pi*t)
+f(0)
+t = (-2:2);
+f(t)
+
+figure
+plot(t,f(t));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'f(t)'</span>);
+grid ;
+
+figure
+t = (-2:0.01:2);
+plot (t,f(t));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'f(t)'</span>);
+grid ;
+</pre><pre class="codeoutput">
+f =
+
+  function_handle with value:
+
+    @(t)exp(-t).*cos(2*pi*t)
+
+
+ans =
+
+     1
+
+
+ans =
+
+    7.3891    2.7183    1.0000    0.3679    0.1353
+
+</pre><img vspace="5" hspace="5" src="publis_06.png" alt=""> <img vspace="5" hspace="5" src="publis_07.png" alt=""> <p>M1.2 Relational Operators and the Unit Step Function</p><pre class="codeinput">u =@(t) t&gt;=0
+
+figure
+t = (-2:2);
+plot (t,u(t));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'u(t)'</span>);
+grid ;
+
+figure ()
+t = (-2:0.01:2);
+plot (t,u(t));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'u(t)'</span>);
+axis ([-2 2 -0.1 1.1]);
+
+figure ()
+p = @(t) (t&gt;=0) &amp; (t&lt;1);
+t = (-1:0.01:2);
+plot(t,p(t));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'p(t) = u(t)-u(t-1)'</span>);
+axis ([-1 2 -.1 1.1]);
+</pre><pre class="codeoutput">
+u =
+
+  function_handle with value:
+
+    @(t)t&gt;=0
+
+</pre><img vspace="5" hspace="5" src="publis_08.png" alt=""> <img vspace="5" hspace="5" src="publis_09.png" alt=""> <img vspace="5" hspace="5" src="publis_10.png" alt=""> <p>M1.3 Visualizing Operations on the Independent Variable</p><pre class="codeinput">g =@(t) exp(-t).*cos(2*pi*t).*(t&gt;=0)
+
+figure ()
+t = (-2:0.01:2);
+plot(t,g(2*t+1));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'g(2t+1)'</span>)';
+grid;
+
+figure ()
+plot(t,g(-t+1));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'g(-t+1)'</span>)';
+grid;
+
+figure ()
+plot(t,g(2*t+1) +g(-t+1));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'h(t)'</span>)'; grid;
+</pre><pre class="codeoutput">
+g =
+
+  function_handle with value:
+
+    @(t)exp(-t).*cos(2*pi*t).*(t&gt;=0)
+
+</pre><img vspace="5" hspace="5" src="publis_11.png" alt=""> <img vspace="5" hspace="5" src="publis_12.png" alt=""> <img vspace="5" hspace="5" src="publis_13.png" alt=""> <p>M1.4 Numerical Integration and Estimating Signal Energy</p><pre class="codeinput">x = @(t) exp(-t).*((t&gt;=0)&amp;(t&lt;1));
+t = (0:0.01:1);
+E_x= sum(x(t).*(x(t).*0.01))
+t = (0:0.01:1);
+
+integral =@(t) exp(-2*t).*((t&gt;=0)&amp;(t&lt;1));
+Ef= quad(integral,0,1)
+
+
+g_squared =@(t) exp(-2*t).*(cos(2*pi*t).^2).*(t&gt;=0);
+t = (0:0.001:100);
+E_g = sum(g_squared(t)*0.001)
+
+E_g2 = quad(g_squared, 0,100)
+</pre><pre class="codeoutput">
+E_x =
+
+    0.4367
+
+
+Ef =
+
+    0.4323
+
+
+E_g =
+
+    0.2567
+
+
+E_g2 =
+
+    0.2562
+
+</pre><h2 id="15">Problema 1.2.2 Lathi</h2><p>For the signal x(t), sketch</p><div><ol><li>x(t - 4)</li><li>x(t / 1.5)</li><li>x(- t)</li><li>x(2t - 4)</li><li>x(2 - t)</li></ol></div><pre class="codeinput">x=@(t) -t.*(t&gt;=-4 &amp; t&lt;0)+ t.*(t&gt;=0 &amp; t&lt;2);
+
+figure ()
+t = (-5:0.001:3);
+plot (t,x(t));
+grid <span class="string">on</span> ;
+axis([-6 5 -1 6]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+title(<span class="string">'grafica de las se&ntilde;ales f(t)=-t(u(t+4)-u(t))+t(u(t)-u(t-2))'</span>)
+
+figure ()
+t = (-10:0.001:10);
+plot (t,x(t-4));
+grid <span class="string">on</span> ;
+axis([-2 7 -1 6]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+title(<span class="string">'grafica de las se&ntilde;ales f(t-4)'</span>)
+
+figure ()
+t = (-10:0.001:10);
+plot (t,x(t/1.5));
+grid <span class="string">on</span> ;
+axis([-9 7 -1 6]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+title(<span class="string">'grafica de las se&ntilde;ales f(t/1.5)'</span>)
+
+figure ()
+t = (-10:0.001:10);
+plot (t,x(-t));
+grid <span class="string">on</span> ;
+axis([-4 5 -1 6]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+title(<span class="string">'grafica de las se&ntilde;ales f(-t)'</span>)
+
+figure ()
+t = (-10:0.001:10);
+plot (t,x(2.*t-4));
+grid <span class="string">on</span> ;
+axis([-1 4 -1 6]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+title(<span class="string">'grafica de las se&ntilde;ales f(2t-4)'</span>)
+
+figure ()
+t = (-10:0.001:10);
+plot (t,x(2-t));
+grid <span class="string">on</span> ;
+axis([-1 8 -1 6]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+title(<span class="string">'grafica de las se&ntilde;ales f(2-t)'</span>)
+</pre><img vspace="5" hspace="5" src="publis_14.png" alt=""> <img vspace="5" hspace="5" src="publis_15.png" alt=""> <img vspace="5" hspace="5" src="publis_16.png" alt=""> <img vspace="5" hspace="5" src="publis_17.png" alt=""> <img vspace="5" hspace="5" src="publis_18.png" alt=""> <img vspace="5" hspace="5" src="publis_19.png" alt=""> <h2 id="17">Funci&oacute;n de Energ&iacute;a</h2><pre class="language-matlab"><span class="keyword">function</span> [energiafinal] = calculoenergia(funcion,vdeint,a,b)
+energiafinal=limit(int(funcion^{2},vdeint,a,b),vdeint,inf)
+<span class="keyword">end</span>
+</pre><p>Problema 1.1.3 Lathi a) Find the energies of signals x(t) + y(t).</p><pre class="codeinput">syms <span class="string">x</span>;
+calculoenergia(heaviside(x),x,0,2)+calculoenergia(heaviside(x)-2*heaviside(x-1),x,0,2)
+</pre><pre class="codeoutput"> 
+ans =
+ 
+4
+ 
+</pre><p>Problema 1.1.3 Lathi b) Find the energies of signals and x(t) ? y(t).</p><pre class="codeinput">calculoenergia(heaviside(x),x,0,2)-calculoenergia(heaviside(x)-2*heaviside(x-1),x,0,2)
+</pre><pre class="codeoutput"> 
+ans =
+ 
+0
+ 
+</pre><h2 id="21">Funci&oacute;n de Potencia</h2><pre class="language-matlab"><span class="keyword">function</span> [potenciafinal] = calculopotencia(funcion,vdeint,a,b)
+potenciafinal=(1/(a-b))*limit(int(funcion^{2},vdeint,b,a),vdeint,inf)
+<span class="keyword">end</span>
+</pre><p>Problema 1.1.4 Lathi Find the power of the periodic signal x(t)</p><pre class="codeinput">calculopotencia(x^(3),x,-2,2)
+</pre><pre class="codeoutput"> 
+ans =
+ 
+64/7
+ 
+</pre><h2 id="24">Referencias</h2><p><a href="https://es.mathworks.com/products/matlab.html">Matlab</a></p><p><a href="https://octave-online.net/">Octave</a></p><p><a href="http://dea.unsj.edu.ar/control2/matlab%20para%20ingenieros.pdf">Matlab ejemplos</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Práctica 3: Señales en Tiempo Continuo
+
+%% Integrantes
+%
+% Flores Lima José Ricardo
+%
+% Medina Bautista Sergio Cristian
+%
+% Plata Montejano Lissete
+
+%% Objetivos
+% * Manipulación básica de MATLAB
+% * Gráficas de señales reales y complejas continuas 
+% * Transformación de señales continuas (escalamientos y traslaciones)
+% * Calculo de energía y potencia de señales continuas
+
+%% Introducción
+% Matlab es un lenguaje de programación dedicado al cálculo matemático y técnico. Su desarrollo comienza en los años 70 por Cleve Moler, quién buscaba una forma simple al acceso del software matricial desarrollado en UNIX LINPACK (de LINear equations PACKage) y EISPACK (de EIgenvalue Subroutines PACKage). El continuar con el proyecto de MATrix LABoratory (MATLAB) lo llevo a fundar MathWorks, empresa que hoy en día continúa construyendo las diferentes herramientas que usa Matlab para sus cálculos
+% <https://es.mathworks.com/academia.html?s_tid=gn_acad curso>.
+% Regularmente se menciona la necesidad de comprar la licencia para hacer uso de Matlab como una de sus principales desventajas.
+%
+%
+% Si requerimos la misma funcionalidad y operaciones que Matlab, podemos
+% recurrir a
+% <https://www.gnu.org/software/octave/about.html Octave>. 
+% Octave fue desarrollada con el objetivo de ser parecido a Matlab, es por eso que, en general, 
+% su motor de funcionamiento es el mismo. De manera que puedes trabajar en Octave de la misma forma en que lo harías 
+% en Matlaba, teniendo solo algunas variantes en sintaxis 
+% <https://miriadax.net/web/matlab-y-octave-para-ingenieros-y-cientificos curso>.
+%
+% 
+% <https://www.python.org/about/ Python> se desarrolla bajo una licencia de código abierto aprobada por OSI, 
+% por lo que se puede usar y distribuir libremente, incluso para uso comercial. 
+% Python es una herramienta que puede ser utilizada en diferentes contextos, solo requieres de utilizar 
+% las bibliotecas necesarias y conocer la sintaxis. Si bien, puramente no tienes el mismo nivel de operacionalidad 
+% que en Matlab, utilizando librerías como, puedes darle un uso bastante parecido. Además de que
+% nativamente contiene alta funcionalidad en crear gráficas y cosas así. Quizá una de las desventajas es que 
+% no existe una “columna” de donde puedas tomar la funcionalidad que necesitas, de manera que si necesitas
+% implementar algo puede que la documentación sea escaza
+% <https://codigofacilito.com/videos/1-curso-python-introduccion cursos>.1
+
+
+%% Fun1
+% Función que recibe como parametros 'a' y 'w', regresa la evaluación de la función $F(\omega)=a/(a^2+\omega^2)$
+%%
+%   function [F] = fun1 (w, a)
+%       F = a./(a.^2 + w.^2);
+%   end
+%
+
+%% Función que grafique de $R\rightarrow R$
+% 
+% Grafica de la función 1/(1^2+w^2)
+syms w
+grafReal(1/(1^2+w^2), w, -2, 2)
+
+%% Función que grafique de $R\rightarrow R^2$
+%
+% Grafica de la transformada de Fourier
+syms t
+grafComplejo( fourier(exp(-2*t)*heaviside(t)), w, -10, 10)
+
+%%
+%
+% Grafica de f(t)
+grafReal(exp(-2*t)*heaviside(t), t, -1, 5)
+
+%%
+%
+% Espectro de Magnitud
+grafReal( abs(fourier(exp(-2*t)*heaviside(t))), w, -10, 10)
+
+%%
+%
+% Espectro de Fase
+grafReal( angle(fourier(exp(-2*t)*heaviside(t))), w, -10, 10)
+
+%% Operaciones de la sección M1.1 a M1.4 del Lathi
+%
+% M1.1 Inline Functions
+
+f=@(t) exp(-t).*cos(2*pi*t)
+f(0)
+t = (-2:2);
+f(t)
+
+figure 
+plot(t,f(t));
+xlabel('t'); 
+ylabel('f(t)'); 
+grid ;
+
+figure 
+t = (-2:0.01:2);
+plot (t,f(t));
+xlabel('t'); 
+ylabel('f(t)');
+grid ;
+
+%%
+%
+% M1.2 Relational Operators and the Unit Step Function
+
+u =@(t) t>=0
+
+figure 
+t = (-2:2);
+plot (t,u(t));
+xlabel('t'); 
+ylabel('u(t)');
+grid ;
+
+figure ()
+t = (-2:0.01:2);
+plot (t,u(t));
+xlabel('t'); 
+ylabel('u(t)');
+axis ([-2 2 -0.1 1.1]);
+
+figure ()
+p = @(t) (t>=0) & (t<1);
+t = (-1:0.01:2); 
+plot(t,p(t));
+xlabel('t');
+ylabel('p(t) = u(t)-u(t-1)');
+axis ([-1 2 -.1 1.1]);
+     
+%%
+%
+% M1.3 Visualizing Operations on the Independent Variable
+g =@(t) exp(-t).*cos(2*pi*t).*(t>=0)
+
+figure ()
+t = (-2:0.01:2);
+plot(t,g(2*t+1)); 
+xlabel('t'); 
+ylabel('g(2t+1)')';
+grid;
+
+figure ()
+plot(t,g(-t+1)); 
+xlabel('t'); 
+ylabel('g(-t+1)')'; 
+grid;
+
+figure ()
+plot(t,g(2*t+1) +g(-t+1)); 
+xlabel('t');
+ylabel('h(t)')'; grid;
+
+%%
+%
+% M1.4 Numerical Integration and Estimating Signal Energy
+
+x = @(t) exp(-t).*((t>=0)&(t<1));
+t = (0:0.01:1);
+E_x= sum(x(t).*(x(t).*0.01))
+t = (0:0.01:1);
+
+integral =@(t) exp(-2*t).*((t>=0)&(t<1));
+Ef= quad(integral,0,1)
+
+
+g_squared =@(t) exp(-2*t).*(cos(2*pi*t).^2).*(t>=0);
+t = (0:0.001:100);
+E_g = sum(g_squared(t)*0.001)
+
+E_g2 = quad(g_squared, 0,100)
+
+%% Problema 1.2.2 Lathi
+% For the signal x(t), sketch
+%%
+% # x(t - 4)
+% # x(t / 1.5)
+% # x(- t)
+% # x(2t - 4)
+% # x(2 - t)
+%
+
+x=@(t) -t.*(t>=-4 & t<0)+ t.*(t>=0 & t<2);
+
+figure ()
+t = (-5:0.001:3);
+plot (t,x(t));
+grid on ;
+axis([-6 5 -1 6]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+title('grafica de las señales f(t)=-t(u(t+4)-u(t))+t(u(t)-u(t-2))')
+
+figure ()
+t = (-10:0.001:10);
+plot (t,x(t-4));
+grid on ;
+axis([-2 7 -1 6]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+title('grafica de las señales f(t-4)')
+
+figure ()
+t = (-10:0.001:10);
+plot (t,x(t/1.5));
+grid on ;
+axis([-9 7 -1 6]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+title('grafica de las señales f(t/1.5)')
+
+figure ()
+t = (-10:0.001:10);
+plot (t,x(-t));
+grid on ;
+axis([-4 5 -1 6]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+title('grafica de las señales f(-t)')
+
+figure ()
+t = (-10:0.001:10);
+plot (t,x(2.*t-4));
+grid on ;
+axis([-1 4 -1 6]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+title('grafica de las señales f(2t-4)')
+
+figure ()
+t = (-10:0.001:10);
+plot (t,x(2-t));
+grid on ;
+axis([-1 8 -1 6]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+title('grafica de las señales f(2-t)')
+
+
+%% Función de Energía
+%%
+%   function [energiafinal] = calculoenergia(funcion,vdeint,a,b)
+%   energiafinal=limit(int(funcion^{2},vdeint,a,b),vdeint,inf)
+%   end
+
+%%
+%
+% Problema 1.1.3 Lathi a) Find the energies of signals x(t) + y(t).
+syms x;
+calculoenergia(heaviside(x),x,0,2)+calculoenergia(heaviside(x)-2*heaviside(x-1),x,0,2)
+
+%%
+%
+% Problema 1.1.3 Lathi b) Find the energies of signals and x(t) ? y(t).
+calculoenergia(heaviside(x),x,0,2)-calculoenergia(heaviside(x)-2*heaviside(x-1),x,0,2)
+
+%% Función de Potencia
+%%
+%   function [potenciafinal] = calculopotencia(funcion,vdeint,a,b)
+%   potenciafinal=(1/(a-b))*limit(int(funcion^{2},vdeint,b,a),vdeint,inf)
+%   end
+
+%%
+%
+% Problema 1.1.4 Lathi Find the power of the periodic signal x(t)
+calculopotencia(x^(3),x,-2,2)
+
+%% Referencias
+% <https://es.mathworks.com/products/matlab.html Matlab>
+%
+% <https://octave-online.net/ Octave>
+%
+% <http://dea.unsj.edu.ar/control2/matlab%20para%20ingenieros.pdf Matlab ejemplos>
+%
+% 
+##### SOURCE END #####
+--></body></html>
