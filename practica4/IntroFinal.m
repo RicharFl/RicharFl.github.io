@@ -1,4 +1,4 @@
-%% Práctica 3: Señales en Tiempo Continuo
+%% Práctica P04: Convolución y Correlación
 
 %% Integrantes
 %
