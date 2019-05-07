@@ -1,0 +1,658 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Pr&aacute;ctica 3: Se&ntilde;ales en Tiempo Continuo</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-05-07"><meta name="DC.source" content="IntroFinal.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 3: Se&ntilde;ales en Tiempo Continuo</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Integrantes</a></li><li><a href="#2">Objetivos</a></li><li><a href="#3">Introducci&oacute;n</a></li><li><a href="#17">PROBLEMA 1</a></li><li><a href="#22">PROBLEMA 2</a></li><li><a href="#27">PROBLEMA 3</a></li><li><a href="#32">PROBLEMA 4</a></li></ul></div><h2 id="1">Integrantes</h2><p>Flores Lima Jos&eacute; Ricardo</p><p>Medina Bautista Sergio Cristian</p><p>Plata Montejano Lissete</p><h2 id="2">Objetivos</h2><div><ul><li>Conocer m&eacute;todos b&aacute;sicos de integraci&oacute;n num&eacute;rica</li><li>Manipulaci&oacute;n de instrucciones en MATLAB</li><li>Simular convoluciones y correlaciones de se&ntilde;ales continuas</li></ul></div><h2 id="3">Introducci&oacute;n</h2><p>Formulas cerradas de Newton-Cotes Compuestas.</p><p>Lo que hacen las formulas de Newton Cotes es utilizar el resultado de la interpolacion de lagrange pero en lugar de integrar a la funcion vamos a integrar al polinomio con el error y dando asi como resultados, varias formulas de Newton Cotes que dependen de que grado se elija encontrar el polinomio.</p><p><img src="IntroFinal_eq00895346547527902404.png" alt="$$ \int_{a}^{b} f(x)dx$$"></p><p>Se utilizan los polinomios de interpolaci&oacute;n de Lagrange</p><p>Donde <img src="IntroFinal_eq02070235110178608026.png" alt="$$f^{n+1}\in(a,b)\ existe\  \epsilon(x)\in(a,b)$">$</p><p>Eso quiere decir que <img src="IntroFinal_eq13021115962121813335.png" alt="$$f$">$ es derivable un numero determinado de veces y esa derivada es continua por lo que gracias a la teria de Lagrange encontramos que</p><p><img src="IntroFinal_eq08742323452569095008.png" alt="$$ f(x)=P(x)+\frac{f^{n+1}(\epsilon(x))}{(n+1)!}(x-x_0)(x-x_1)...(x-x_n) $$"></p><p>Con</p><p><img src="IntroFinal_eq04047330145102404376.png" alt="$$ x\in[a,b]  \ \  y  \ \ x_i \in [a,b] $$"></p><p>Con esto sabemos que la funcion es igual a un polinomio de grado <img src="IntroFinal_eq07193383391687160905.png" alt="$$ n $$"> que coincide con la funcion en determinados puntos mas un termino de error.</p><p>A estas formulas de Newton Cotes se les llaman formulas de <img src="IntroFinal_eq14243839785005799549.png" alt="$$ (n+1) $$"> puntos donde</p><div><ul><li><img src="IntroFinal_eq03096811968274295178.png" alt="$$ x_0=a $$"></li><li><img src="IntroFinal_eq01498095361173234754.png" alt="$$ x_n=b $$"></li><li><img src="IntroFinal_eq18272094828598989328.png" alt="$$ h=\frac{b-a}{n} $$"> (Donde h es el paso)</li><li><img src="IntroFinal_eq03976070515004618078.png" alt="$$ x_i=x_0+ih \ con \ i=0,1,2,...n $$"></li></ul></div><p>REGLA DEL TRAPECIO (n=1)</p><p>Se le llama regla del trapecio porque nos define el area de un trapecio, se calcula el area del trapecio definida por el polinomio de primer grado. Por lo que es importante saber que para un Polinomio de grado uno, la regla del trapecio nos dara como error 0 y ser&aacute; exacta</p><p><img src="IntroFinal_eq03002921801044762381.png" alt="$$ \int_{x_0}^{x_1} f(x)dx = \frac{h}{2}[f(x_0)+f(x_1)]-\frac{h^3}{12}[f''(\epsilon)] $$"></p><pre class="language-matlab">Donde
+</pre><p><img src="IntroFinal_eq14236937781311685361.png" alt="$$ x_0<\epsilon<x_1 $$"></p><div><ul><li><img src="IntroFinal_eq03096811968274295178.png" alt="$$ x_0=a $$"></li><li><img src="IntroFinal_eq01498095361173234754.png" alt="$$ x_n=b $$"></li><li><img src="IntroFinal_eq07640682108388731863.png" alt="$$ h=b-a $$"></li><li><img src="IntroFinal_eq00322646372071770380.png" alt="$$ x_i=a+i(b,a) \ con \ i=0,1 $$"></li></ul></div><p>Ejemplo para <img src="IntroFinal_eq13418282348498704116.png" alt="$$ e^{-x^2} $$"></p><p><img src="IntroFinal_eq09956963684316968265.png" alt="$$ \int_{-1}^{1} e^{-x^2} dx = \frac{2}{2}[e^{-1}+e^{-1}]-\frac{8}{12}[-2e^{-\epsilon^{2}}(1-2\epsilon^{2})] $$"></p><p>Con</p><p><img src="IntroFinal_eq09123491435849038310.png" alt="$$-1<\epsilon<1$$"></p><p><img src="IntroFinal_eq13813007719565626369.png" alt="$$ \int_{-1}^{1} e^{-x^2} dx = 0.73377+\frac{4}{3}e^{-\epsilon^{2}}(1-2\epsilon^{2}) $$"></p><p>Con</p><p><img src="IntroFinal_eq09123491435849038310.png" alt="$$-1<\epsilon<1$$"></p><p>REGLA DE SIMPSON (n=2)</p><p>Si queremos interpolar 3 puntos para un polinomio de segundo grado utilizamos la regla de Simpson, y lo que necesitamos hacer es encontra el valor de h como ya lo hemos definido</p><p><img src="IntroFinal_eq14752611483995070827.png" alt="$$ \int_{x_0}^{x_2} f(x)dx = \frac{h}{3}[f(x_0)+f(x_1)+f(x_2)]-\frac{h^5}{90}[f''''(\epsilon)] $$"></p><pre>Donde</pre><p><img src="IntroFinal_eq00239627582719141639.png" alt="$$ x_0<\epsilon<x_2$$"></p><div><ul><li><img src="IntroFinal_eq03096811968274295178.png" alt="$$ x_0=a $$"></li><li><img src="IntroFinal_eq01498095361173234754.png" alt="$$ x_n=b $$"></li><li><img src="IntroFinal_eq14458128796546234457.png" alt="$$ h=\frac{b-a}{2} $$"></li><li><img src="IntroFinal_eq10177073811901593108.png" alt="$$ x_i=a+ih \ con \ i=0,1,2 $$"></li><li><img src="IntroFinal_eq04334028986825522667.png" alt="$$ x_1=a+\frac{b-a}{2}=\frac{b+a}{2} $$"></li></ul></div><p>Ejemplo para <img src="IntroFinal_eq13418282348498704116.png" alt="$$ e^{-x^2} $$"></p><p><img src="IntroFinal_eq17914268355779964761.png" alt="$$ \int_{-1}^{1} e^{-x^2} dx = \frac{1}{3}[e^{-1}+4e^{0}+e^{-1}]-\frac{1}{90}[-4e^{-\epsilon^{2}}(-4\epsilon^{4}+12\epsilon^{2}-3)] $$"></p><p>Con</p><p><img src="IntroFinal_eq16275579875654979897.png" alt="$$ -1<\epsilon<1$$"></p><p><img src="IntroFinal_eq07603602508882896615.png" alt="$$ \int_{-1}^{1} e^{-x^2} dx = 1.5785+\frac{2}{45}e^{-\epsilon^{2}}(-4\epsilon^{4}+12\epsilon^{2}-3) $$"></p><p>Con</p><p><img src="IntroFinal_eq16275579875654979897.png" alt="$$ -1<\epsilon<1$$"></p><p>REGLA DE SIMPSON 3/8 (n=3)</p><p>Ahora si pensamos en hacer la interpolacion de un polinomio de tercer grado necesitamos 4 puntos por lo que utilizamos la regla de tres octavos de Simpson</p><p><img src="IntroFinal_eq17116105609684156826.png" alt="$$ \int_{x_0}^{x_3} f(x)dx = \frac{3h}{8}[f(x_0)+3f(x_1)+3f(x_2)+f(x_3)]-\frac{3h^5}{80}[f''''(\epsilon)] $$"></p><p>Donde</p><p><img src="IntroFinal_eq16279693449138582043.png" alt="$$ x_0<\epsilon<x_3$$"></p><div><ul><li><img src="IntroFinal_eq03096811968274295178.png" alt="$$ x_0=a $$"></li><li><img src="IntroFinal_eq01498095361173234754.png" alt="$$ x_n=b $$"></li><li><img src="IntroFinal_eq17452237112375815025.png" alt="$$ h=\frac{b-a}{3} $$"></li><li><img src="IntroFinal_eq05859702722033664898.png" alt="$$ x_i=a+i(\frac{b-a}{3}) \ con \ i=0,1,2,3 $$"></li><li><img src="IntroFinal_eq07450465460225393308.png" alt="$$ x_1=a+\frac{b-a}{3}=\frac{2a+b}{3} $$"></li><li><img src="IntroFinal_eq05765436444642389124.png" alt="$$ x_2=a+\frac{2b-2a}{3}=\frac{2b+a}{3} $$"></li><li><img src="IntroFinal_eq16163414858429284458.png" alt="$$ x_3=b $$"></li></ul></div><p>Ejemplo para <img src="IntroFinal_eq13418282348498704116.png" alt="$$ e^{-x^2} $$"></p><p><img src="IntroFinal_eq07752867800326023455.png" alt="$$ \int_{-1}^{1} e^{-x^2} dx = (\frac{3}{8})(\frac{2}{3})[e^{-1}+3e^{-\frac{1}{9}}+3e^{-\frac{1}{9}}+e^{-1}]-\frac{3}{80}(\frac{2}{3})^{5}[-4e^{-\epsilon^{2}}(-4\epsilon^{4}+12\epsilon^{2}-3)] $$"></p><p>Con</p><p><img src="IntroFinal_eq01674291474118256854.png" alt="$$ -1<\epsilon<1 $$"></p><p><img src="IntroFinal_eq12182712974324917068.png" alt="$$ \int_{-1}^{1} e^{-x^2} dx = 1.5261+\frac{8}{405}e^{-\epsilon^{2}}(-4\epsilon^{4}+12\epsilon^{2}-3) $$"></p><p>Con</p><p><img src="IntroFinal_eq01674291474118256854.png" alt="$$ -1<\epsilon<1 $$"></p><p>A partir de la Regla del Trapecio y la Regla de Simpson podemos realizar mejores aproximaciones dadas ciertas condiciones. A continuaci&oacute;n definiremos la Regla Compuesta del Trapecio y la Regla Compuesta de Simpson.</p><p>REGLA COMPUESTA DEL TRAPECIO</p><p>La idea es subdividir el intervalo de integraci&oacute;n en varios intervalos y aplicar en cada uno de ellos la regla del trapecio. El resultado ser&iacute;a una aproximaci&oacute;n a partir de la suma de &aacute;reas de los trapecios.</p><p>Sabiendo que los puntos intermedios ser&aacute;n evaluados 2 veces, obtenemos la siguiente formula:</p><p><img src="IntroFinal_eq08436845857449782664.png" alt="$$ \int_a^bf(x)dx = \frac{h}{2}[f(a)+2\sum_{j=1}^{n-1}f(x_i)+f(b)] -&#xA;\frac{b-a}{12}h^2f^{''}(u)\hspace{5mm}u\in(a,b) $$"></p><p>Donde</p><div><ul><li><img src="IntroFinal_eq07193383391687160905.png" alt="$$ n $$"> = n&uacute;mero de intervalos</li><li><img src="IntroFinal_eq02967173348186276359.png" alt="$$ h = \frac{b-a}{n} $$"></li><li><img src="IntroFinal_eq09531519701102156808.png" alt="$$ xj = a + jh, \hspace{5mm}j = 0,1,2,...,n $$"></li></ul></div><p>Y el &uacute;ltimo termino es un ajuste que permite la igualdad entre la integraci&oacute;n anal&iacute;tica y la Regla Compuesta del Trapecio</p><p>Ejemplo para <img src="IntroFinal_eq13418282348498704116.png" alt="$$ e^{-x^2} $$"> con <img src="IntroFinal_eq17632585594396137663.png" alt="$$ n = 10 $$"> en [-1, 1]</p><div><ul><li><img src="IntroFinal_eq17632585594396137663.png" alt="$$ n = 10 $$"></li><li><img src="IntroFinal_eq03929416018417341934.png" alt="$$ h = \frac{1-(-1)}{10} = 0.2 $$"></li><li><img src="IntroFinal_eq14310307019431269100.png" alt="$$ xj = -1 + 0.2*j, \hspace{5mm}j = 0,1,2,...,10 $$"></li></ul></div><p><img src="IntroFinal_eq02912543466622657747.png" alt="$$ \int_{-1}^1e^{-x^2}dx = \frac{0.2}{2}[e^{-(-1)^2}+2\sum_{j=1}^{n-1}e^{-(x_i)^2}+e^{-(1)^2}] - \frac{1-(-1)}{12}(0.2)^2[-2*e^{-u^2}(1-2u^2)]$$"></p><p><img src="IntroFinal_eq13650251074830702999.png" alt="$$ \int_{-1}^1e^{-x^2}dx = 1.4887 + 0.0133e^{-u^2}(1-2u), \hspace{5mm}u\in(-1,1) $$"></p><p>REGLA COMPUESTA DE SIMPSON</p><p>De la misma manera que en la Regla Compuesta del Trapecio, dividimos el intervalo de integraci&oacute;n en subintervalos. En este caso, tomaremos dos intervalos para tener tres puntos y aplicar la Regla de Simpson en ellos.</p><p>Debido a que los puntos extremos de cada subintervalo forman parte de dos par&aacute;bolas (excepto los puntos de integraci&oacute;n), multiplicamos por 2 cada punto con sub&iacute;ndice par. En los puntos medios de cada par&aacute;bola aplicamos la definici&oacute;n de la Regla de Simpson, de manera que multiplicaremos por cuatro los puntos con sub&iacute;ndice impar.</p><p><img src="IntroFinal_eq00731456277653317213.png" alt="$$ \int_a^bf(x)dx = \frac{h}{3}[f(a)+2\sum_{j=1}^{\frac{n}{2}-1}f(x_{2j})+4\sum_{j=1}^{\frac{n}{2}}f(x_{2j-1})+f(b)] -&#xA;\frac{b-a}{180}h^4f^{(4)}(u)\hspace{5mm}u\in(a,b) $$"></p><p>Donde</p><div><ul><li><img src="IntroFinal_eq07193383391687160905.png" alt="$$ n $$"> = n&uacute;mero de intervalos</li><li><img src="IntroFinal_eq02967173348186276359.png" alt="$$ h = \frac{b-a}{n} $$"></li><li><img src="IntroFinal_eq09531519701102156808.png" alt="$$ xj = a + jh, \hspace{5mm}j = 0,1,2,...,n $$"></li></ul></div><p>Y el &uacute;ltimo t&eacute;rmino es un ajuste que permite la igualdad entre la integraci&oacute;n anal&iacute;tica y la Regla Compuesta de Simpson</p><p>Ejemplo para <img src="IntroFinal_eq13418282348498704116.png" alt="$$ e^{-x^2} $$"> con <img src="IntroFinal_eq17632585594396137663.png" alt="$$ n = 10 $$"> en [-1, 1]</p><div><ul><li><img src="IntroFinal_eq17632585594396137663.png" alt="$$ n = 10 $$"></li><li><img src="IntroFinal_eq03929416018417341934.png" alt="$$ h = \frac{1-(-1)}{10} = 0.2 $$"></li><li><img src="IntroFinal_eq14310307019431269100.png" alt="$$ xj = -1 + 0.2*j, \hspace{5mm}j = 0,1,2,...,10 $$"></li></ul></div><p><img src="IntroFinal_eq16425057691187097088.png" alt="$$ \int_{-1}^1e^{-x^2}dx = \frac{0.2}{3}[e^{-(-1)^2}+2\sum_{j=1}^{\frac{n}{2}-1}e^{-(x_{2j})^2}+4\sum_{j=1}^{\frac{n}{2}}e^{-(x_{2j-1})^2}+e^{-(1)^2}] - \frac{1-(-1)}{180}(0.2)^2[-4e^{-u^2}(-4u^2+12u^2-3)]$$"></p><p><img src="IntroFinal_eq12473734601278742000.png" alt="$$ \int_{-1}^1e^{-x^2}dx = 1.4936 + 0.00007e^{-u^2}(-4u^2+12u^2-3), \hspace{5mm}u\in(-1,1) $$"></p><h2 id="17">PROBLEMA 1</h2><p>Para el PR04 reporte la grafica de la simulaci&oacute;n n&uacute;merica de la convoluci&oacute;n y compare con el resultado an&aacute;litico que obtuvo para el problema 1, esto es, su pr&aacute;ctica tendr&aacute; que incluir una llamada a la funci&oacute;nn convconm y posteriormente se tendr&aacute; que mostrar (mediante el Publish) la gr&aacute;fica tanto de las se&ntilde;ales invlucradas como el resultado de la convoluci&oacute;n, y en esta &uacute;ltima gr&aacute;ficara su resultado analitico, se tendr&aacute; que incluir el resultado analitico. REALICE LA CONVOLUCION DE LAS SIGUIENTES SE&Ntilde;ALES</p><pre class="codeinput"><span class="comment">%FIGURA 1</span>
+figure(1);
+h=@(t) ((-t+1).*((t&gt;=0)&amp;(t&lt;1))+(t-1).*((t&gt;=1)&amp;(t&lt;2)));
+t = (-0.01:0.01:3);
+s=h(t);
+plot (t,s);
+grid <span class="string">on</span>;
+axis([-1 3 -1 2]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+</pre><img vspace="5" hspace="5" src="IntroFinal_01.png" alt=""> <pre class="codeinput"><span class="comment">%FIGURA 2</span>
+figure(2);
+x=@(t) 1.*((t&gt;=0)&amp;(t&lt;1));
+t = (-0.01:0.01:3);
+s=x(t);
+plot (t,s);
+grid <span class="string">on</span>;
+axis([-1 2 -1 2]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+</pre><img vspace="5" hspace="5" src="IntroFinal_02.png" alt=""> <pre class="codeinput"><span class="comment">%CONVOLUCION</span>
+h=@(t) ((-t+1).*((t&gt;=0)&amp;(t&lt;1))+(t-1).*((t&gt;=1)&amp;(t&lt;2)));
+x=@(t) 1.*((t&gt;=0)&amp;(t&lt;1));
+f=@(t) ((-t.^2)/2 + t).*((t&gt;=0)&amp;(t&lt;1))+ (t.^2 - 3.*t + 5/2).*((t&gt;=1)&amp;(t&lt;2))+(-(t.^2)/2 + 2.*t - 3/2).*((t&gt;=2)&amp;(t&lt;3));
+
+convconm2(x, h, f, -1, 4, -1, 2, -1, 2, -1:.1:4);
+</pre><img vspace="5" hspace="5" src="IntroFinal_03.png" alt=""> <p>RESULTADO ANALITICO</p><p><img src="IntroFinal_eq03496924028107076817.png" alt="$$ (-t+1)[u(t)-u(t-1)]+(t-1)[u(t-1)-u(t-2)] * 1[u(t)-u(t-1)] = \left\{ \begin{array}{lcc}            0 &amp; si &amp; t<0              \\\frac{-t^2}{2}+t &amp;  si &amp; 0 < t < 1 \\             \\t^2 - 3t +\frac{5}{2} &amp; si &amp; 1<t<2             \\\frac{-t^2}{2} + 2t -\frac{3}{2} &amp; si &amp; 2<t<3             \\ 0 &amp; si &amp; t&gt;3             \end{array}   \right.$"></p><h2 id="22">PROBLEMA 2</h2><p>Para el PR04 reporte la grafica de la simulaci&oacute;n n&uacute;merica de la convoluci&oacute;n y compare con el resultado an&aacute;litico que obtuvo para el problema 3, esto es, su pr&aacute;ctica tendr&aacute; que incluir una llamada a la funci&oacute;nn convconm y posteriormente se tendr&aacute; que mostrar (mediante el Publish) la gr&aacute;fica tanto de las se&ntilde;ales invlucradas como el resultado de la convoluci&oacute;n, y en esta &uacute;ltima gr&aacute;ficara su resultado analitico, se tendr&aacute; que incluir el resultado analitico. REALICE LA CONVOLUCION DE LAS SIGUIENTES SE&Ntilde;ALES</p><pre class="codeinput"><span class="comment">%FIGURA 3</span>
+figure(3);
+p=@(t)t.*(t&lt;1)+(t&gt;=1)-t.*(t&lt;0)-(t&gt;2);
+t = (-0.01:0.01:3);
+s=p(t);
+plot (t,s);
+grid <span class="string">on</span>;
+axis([-1 4 -1 2]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+</pre><img vspace="5" hspace="5" src="IntroFinal_04.png" alt=""> <pre class="codeinput"><span class="comment">%FIGURA 4</span>
+figure(4);
+p = @(t) (t&gt;=1)-(t&gt;=3);
+t = (0.999:0.01:3.1);
+s=p(t);
+plot (t,s);
+grid <span class="string">on</span>;
+axis([-1 4 -1 2]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+</pre><img vspace="5" hspace="5" src="IntroFinal_05.png" alt=""> <pre class="codeinput"><span class="comment">%CONVOLUCION</span>
+h = @(t) t.*(t&lt;1)+(t&gt;=1)-t.*(t&lt;0)-(t&gt;2);
+x = @(t) ((t&gt;=1) &amp; (t&lt;3));
+f = @(t) (0.5-t+0.5*(2.^t)).*(t&gt;=1 &amp; t&lt;2) + (t-(3/2)).*(t&gt;=2 &amp; t&lt;3) + (-3+3*t-0.5*(2.^t)).*(t&gt;=3 &amp; t&lt;4) + (5-t).*(t&gt;=4 &amp; t&lt;5);
+convconm2(x, h, f, -1, 6, -1, 2, -1, 5, 0:.1:6);
+</pre><img vspace="5" hspace="5" src="IntroFinal_06.png" alt=""> <p>RESULTADO ANALITICO <img src="IntroFinal_eq02054415217017903838.png" alt="$$t[u(t)-u(t-1)]+u(t-1)-u(t-2) * [u(t-1)-u(t-3)] = \left\{ \begin{array}{lcc}            0 &amp; si &amp; t<1             \\\frac{1}{2}-t+\frac{t^2}{2} &amp;  si &amp; 1 < t < 2 \\             \\ t-\frac{3}{2} &amp; si &amp; 2<t<3             \\-3+3t-\frac{1}{2}t^{2} &amp; si &amp; 3<t<4             \\5-t &amp; si &amp; 4<t<5             \\0 &amp; si &amp; t&gt;5             \end{array}   \right.$"></p><h2 id="27">PROBLEMA 3</h2><p>Para el PR06 reporte la grafica de la simulaci&oacute;n n&uacute;merica de la correalci&oacute;n y compare con el resultado an&aacute;litico que obtuvo para el problema f), esto es, su pr&aacute;ctica tendr&aacute; que incluir una llamada a la funci&oacute;nn convconm y posteriormente se tendr&aacute; que mostrar (mediante el Publish) la gr&aacute;fica tanto de las se&ntilde;ales involucradas como el resultado de su correlaci&oacute;n, y en esta &uacute;ltima graficara su resultado analitico, se tendr&aacute; que incluir el resultado analitico. Realice la correlacion de las se&ntilde;ales en las figuras 5 y 6</p><p>Figura 5</p><pre class="codeinput">figure;
+h=@(t) 1.*((t&gt;=0)&amp;(t&lt;3))-1.*((t&gt;=3)&amp;(t&lt;4));
+t = (-0.01:0.01:6);
+s=h(t);
+plot (t,s);
+grid <span class="string">on</span>;
+axis([-1 6 -3 2]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+</pre><img vspace="5" hspace="5" src="IntroFinal_07.png" alt=""> <pre>Figura 6</pre><pre class="codeinput">figure;
+x=@(t) -1.*((t&gt;=-4)&amp;(t&lt;-3))+1.*((t&gt;=-3)&amp;(t&lt;0));
+t = (-5:0.01:2);
+s=x(t);
+plot (t,s);
+grid <span class="string">on</span>;
+axis([-5 2 -3 2]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+
+
+f=@(t)  (-4-t).*((t&gt;=-4)&amp;(t&lt;-3))+(t+2).*((t&gt;=-3)&amp;(t&lt;-1))+(4+3.*t).*((t&gt;=-1)&amp;(t&lt;0))+(-3.*t+4).*((t&gt;=0)&amp;(t&lt;1))+(-t+2).*((t&gt;=1)&amp;(t&lt;3))+(-4+t).*((t&gt;=3)&amp;(t&lt;4));
+</pre><img vspace="5" hspace="5" src="IntroFinal_08.png" alt=""> <p>RESULTADO CORRELACION</p><pre class="codeinput">f=@(t)  (-4-t).*((t&gt;=-4)&amp;(t&lt;-3))+(t+2).*((t&gt;=-3)&amp;(t&lt;-1))+(4+3.*t).*((t&gt;=-1)&amp;(t&lt;0))+(-3.*t+4).*((t&gt;=0)&amp;(t&lt;1))+(-t+2).*((t&gt;=1)&amp;(t&lt;3))+(-4+t).*((t&gt;=3)&amp;(t&lt;4));
+x=@(t) -1.*((t&gt;=-4)&amp;(t&lt;-3))+1.*((t&gt;=-3)&amp;(t&lt;0));
+h=@(t) 1.*((t&gt;=0)&amp;(t&lt;3))-1.*((t&gt;=3)&amp;(t&lt;4));
+
+convconm2(x, h, f, -6, 6, -2, 6, -3, 6, -6:.1:6);
+</pre><img vspace="5" hspace="5" src="IntroFinal_09.png" alt=""> <p>RESULTADO ANALITICO</p><p><img src="IntroFinal_eq03153328916140243348.png" alt="$$ f(t) = \left\{ \begin{array}{lcc}            0 &amp; si &amp; t<-4             \\-4-t &amp;  si &amp; -4 < t < -3 \\             \\t+2 &amp; si &amp; -3<t<-1             \\4+3t &amp; si &amp; -1<t<0             \\4-3t &amp; si &amp; 0<t<1             \\-t+2 &amp; si &amp; 1<t<3             \\-4+t &amp; si &amp; 3<t<4             \\ 0 &amp; si &amp; t&gt;4             \end{array}   \right.$"></p><h2 id="32">PROBLEMA 4</h2><p>Para el PR06 reporte la grafica de la simulaci&oacute;n n&uacute;merica de la correalci&oacute;n y compare con el resultado an&aacute;litico que obtuvo para el problema f), esto es, su pr&aacute;ctica tendr&aacute; que incluir una llamada a la funci&oacute;nn convconm y posteriormente se tendr&aacute; que mostrar (mediante el Publish) la gr&aacute;fica tanto de las se&ntilde;ales involucradas como el resultado de su correlaci&oacute;n, y en esta &uacute;ltima graficara su resultado analitico, se tendr&aacute; que incluir el resultado analitico. Realice la correlacion de las se&ntilde;ales en las figuras 7 y 8</p><pre class="codeinput"><span class="comment">%FIGURA 7</span>
+figure(7);
+f= @(t) (t&gt;=0)-2*(t&gt;2)+2*(t&gt;=4);
+t= 0:0.001:4;
+y= f(t);
+plot (t,y);
+grid <span class="string">on</span>;
+axis([-1 5 -2 2]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+</pre><img vspace="5" hspace="5" src="IntroFinal_10.png" alt=""> <pre class="codeinput"><span class="comment">%FIGURA 8</span>
+figure(8)
+f= @(t) (t&gt;=0)-2*(t&gt;=3)+2*(t&gt;=4);
+t= 0:0.001:4;
+y= f(t);
+plot (t,y);
+grid <span class="string">on</span>
+axis([-1 5 -2 2]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+</pre><img vspace="5" hspace="5" src="IntroFinal_11.png" alt=""> <pre class="codeinput"><span class="comment">%%RESULTADO CORRELACION</span>
+x = @(t) 1.*((t&gt;=0 &amp; t&lt;3) - (t&gt;=3 &amp; t&lt;4));
+h = @(t) 1.*(-(t&gt;=-4 &amp; t&lt;-2) + (t&gt;=-2 &amp; t&lt;0));
+f = @(t) (-4-t).*(t&gt;=-4 &amp; t&lt;-2) + (t).*(t&gt;=-2 &amp; t&lt;-1) + (3*t+2).*(t&gt;=-1 &amp; t&lt;0) + (2+t).*(t&gt;=0 &amp; t&lt;1) + (-3*t+6).*(t&gt;=1 &amp; t&lt;2) + (2-t).*(t&gt;=2 &amp; t&lt;3) + (-4+t).*(t&gt;=3 &amp; t&lt;4);
+convconm2(x, h, f, -5, 5, -2, 2, -3, 4, -4.25:.1:4.25)
+</pre><img vspace="5" hspace="5" src="IntroFinal_12.png" alt=""> <p>RESULTADO ANALITICO <img src="IntroFinal_eq00572863951706125569.png" alt="$$t[u(t)-u(t-1)]+u(t-1)-u(t-2) * [u(t-1)-u(t-3)] = \left\{ \begin{array}{lcc}            0 &amp; si &amp; t<-4             \\-4-t  &amp;  si &amp; -4 < t < -3 \\             \\ t+2 &amp; si &amp; -3<t<-2             \\3t+6 &amp; si &amp; -2<t<-1             \\-t+2 &amp; si &amp; -1<t<0             \\-3t+2 &amp; si &amp; 0<t<1             \\-t &amp; si &amp; 1<t<2             \\-4+t &amp; si &amp; 2<t<4             \\0 &amp; si &amp; t&gt;4             \end{array}   \right.$"></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Práctica 3: Señales en Tiempo Continuo
+
+%% Integrantes
+%
+% Flores Lima José Ricardo
+%
+% Medina Bautista Sergio Cristian
+%
+% Plata Montejano Lissete
+
+%% Objetivos
+% * Conocer métodos básicos de integración numérica
+% * Manipulación de instrucciones en MATLAB
+% * Simular convoluciones y correlaciones de señales continuas
+
+%% Introducción
+% Formulas cerradas de Newton-Cotes Compuestas. 
+%
+% Lo que hacen las formulas de Newton Cotes es utilizar el resultado de la 
+% interpolacion de lagrange pero en lugar de integrar a la funcion vamos a integrar 
+% al polinomio con el error y dando asi como resultados, varias formulas de Newton Cotes
+% que dependen de que grado se elija encontrar el polinomio.
+%
+% $$ \int_{a}^{b} f(x)dx$$
+%
+% Se utilizan los polinomios de interpolación de Lagrange
+%%
+% Donde $$f^{n+1}\in(a,b)\ existe\  \epsilon(x)\in(a,b)$$
+%
+% Eso quiere decir que $$f$$ es derivable un numero determinado de veces y esa derivada es continua por lo que gracias a la teria de Lagrange encontramos que 
+%
+% $$ f(x)=P(x)+\frac{f^{n+1}(\epsilon(x))}{(n+1)!}(x-x_0)(x-x_1)...(x-x_n) $$
+%
+% Con 
+%
+% $$ x\in[a,b]  \ \  y  \ \ x_i \in [a,b] $$
+%
+% Con esto sabemos que la funcion es igual a un polinomio de grado 
+% $$ n $$ 
+% que coincide con la funcion en determinados puntos mas un termino de error.
+%
+% A estas formulas de Newton Cotes se les llaman formulas de 
+% $$ (n+1) $$  
+% puntos donde 
+%
+% * $$ x_0=a $$
+% * $$ x_n=b $$
+% * $$ h=\frac{b-a}{n} $$
+% (Donde h es el paso)
+% * $$ x_i=x_0+ih \ con \ i=0,1,2,...n $$
+%
+%%
+% ** REGLA DEL TRAPECIO (n=1)
+%
+% Se le llama regla del trapecio porque nos define el area de un trapecio, se calcula
+% el area del trapecio definida por el polinomio de primer grado. Por lo
+% que es importante saber que para un Polinomio de grado uno, la regla del
+% trapecio nos dara como error 0 y será exacta
+%
+% $$ \int_{x_0}^{x_1} f(x)dx = \frac{h}{2}[f(x_0)+f(x_1)]-\frac{h^3}{12}[f''(\epsilon)] $$
+%
+%   Donde 
+%%
+% $$ x_0<\epsilon<x_1 $$
+%
+% * $$ x_0=a $$
+% * $$ x_n=b $$
+% * $$ h=b-a $$
+% * $$ x_i=a+i(b,a) \ con \ i=0,1 $$
+%
+% Ejemplo para $$ e^{-x^2} $$
+%
+% $$ \int_{-1}^{1} e^{-x^2} dx = \frac{2}{2}[e^{-1}+e^{-1}]-\frac{8}{12}[-2e^{-\epsilon^{2}}(1-2\epsilon^{2})] $$ 
+%
+% Con
+%
+% $$-1<\epsilon<1$$
+%
+% $$ \int_{-1}^{1} e^{-x^2} dx = 0.73377+\frac{4}{3}e^{-\epsilon^{2}}(1-2\epsilon^{2}) $$
+%
+% Con 
+%
+% $$-1<\epsilon<1$$
+%
+%%
+% ** REGLA DE SIMPSON (n=2)
+%
+% Si queremos interpolar 3 puntos para un polinomio de segundo grado utilizamos la regla
+% de Simpson, y lo que necesitamos hacer es encontra el valor de h como ya lo 
+% hemos definido 
+%
+% $$ \int_{x_0}^{x_2} f(x)dx = \frac{h}{3}[f(x_0)+f(x_1)+f(x_2)]-\frac{h^5}{90}[f''''(\epsilon)] $$
+%
+%  Donde 
+%%
+% $$ x_0<\epsilon<x_2$$
+%
+% * $$ x_0=a $$
+% * $$ x_n=b $$
+% * $$ h=\frac{b-a}{2} $$
+% * $$ x_i=a+ih \ con \ i=0,1,2 $$
+% * $$ x_1=a+\frac{b-a}{2}=\frac{b+a}{2} $$
+%
+% Ejemplo para $$ e^{-x^2} $$
+%
+% $$ \int_{-1}^{1} e^{-x^2} dx = \frac{1}{3}[e^{-1}+4e^{0}+e^{-1}]-\frac{1}{90}[-4e^{-\epsilon^{2}}(-4\epsilon^{4}+12\epsilon^{2}-3)] $$ 
+%
+% Con 
+%
+% $$ -1<\epsilon<1$$
+%
+% $$ \int_{-1}^{1} e^{-x^2} dx = 1.5785+\frac{2}{45}e^{-\epsilon^{2}}(-4\epsilon^{4}+12\epsilon^{2}-3) $$
+%
+% Con 
+%
+% $$ -1<\epsilon<1$$
+%
+%%
+% ** REGLA DE SIMPSON 3/8 (n=3)
+%
+% Ahora si pensamos en hacer la interpolacion de un polinomio de tercer grado necesitamos 
+% 4 puntos por lo que utilizamos la regla de tres octavos de Simpson 
+%
+% $$ \int_{x_0}^{x_3} f(x)dx = \frac{3h}{8}[f(x_0)+3f(x_1)+3f(x_2)+f(x_3)]-\frac{3h^5}{80}[f''''(\epsilon)] $$
+%
+% Donde
+%%
+% $$ x_0<\epsilon<x_3$$
+%
+% * $$ x_0=a $$
+% * $$ x_n=b $$
+% * $$ h=\frac{b-a}{3} $$
+% * $$ x_i=a+i(\frac{b-a}{3}) \ con \ i=0,1,2,3 $$
+% * $$ x_1=a+\frac{b-a}{3}=\frac{2a+b}{3} $$
+% * $$ x_2=a+\frac{2b-2a}{3}=\frac{2b+a}{3} $$
+% * $$ x_3=b $$
+%
+% Ejemplo para $$ e^{-x^2} $$
+%
+% $$ \int_{-1}^{1} e^{-x^2} dx = (\frac{3}{8})(\frac{2}{3})[e^{-1}+3e^{-\frac{1}{9}}+3e^{-\frac{1}{9}}+e^{-1}]-\frac{3}{80}(\frac{2}{3})^{5}[-4e^{-\epsilon^{2}}(-4\epsilon^{4}+12\epsilon^{2}-3)] $$ 
+%
+% Con 
+%
+% $$ -1<\epsilon<1 $$
+%
+% $$ \int_{-1}^{1} e^{-x^2} dx = 1.5261+\frac{8}{405}e^{-\epsilon^{2}}(-4\epsilon^{4}+12\epsilon^{2}-3) $$
+%
+% Con 
+%
+% $$ -1<\epsilon<1 $$
+%
+%%
+% A partir de la Regla del Trapecio y la Regla de Simpson podemos realizar
+% mejores aproximaciones dadas ciertas condiciones. A continuación
+% definiremos la Regla Compuesta del Trapecio y la Regla Compuesta de
+% Simpson.
+%%
+% ** REGLA COMPUESTA DEL TRAPECIO
+% 
+% La idea es subdividir el intervalo de integración en varios intervalos y aplicar en cada
+% uno de ellos la regla del trapecio. El resultado sería una aproximación a
+% partir de la suma de áreas de los trapecios.
+%
+% Sabiendo que los puntos intermedios serán evaluados 2 veces, obtenemos la
+% siguiente formula:
+%
+% $$ \int_a^bf(x)dx = \frac{h}{2}[f(a)+2\sum_{j=1}^{n-1}f(x_i)+f(b)] -
+% \frac{b-a}{12}h^2f^{''}(u)\hspace{5mm}u\in(a,b) $$
+%%
+% Donde
+%
+% * $$ n $$ = número de intervalos
+% * $$ h = \frac{b-a}{n} $$
+% * $$ xj = a + jh, \hspace{5mm}j = 0,1,2,...,n $$
+%
+% Y el último termino es un ajuste que permite la igualdad entre la
+% integración analítica y la Regla Compuesta del Trapecio
+%
+% Ejemplo para $$ e^{-x^2} $$ con $$ n = 10 $$ en [-1, 1]
+%%
+% * $$ n = 10 $$
+% * $$ h = \frac{1-(-1)}{10} = 0.2 $$
+% * $$ xj = -1 + 0.2*j, \hspace{5mm}j = 0,1,2,...,10 $$
+%
+% $$ \int_{-1}^1e^{-x^2}dx = \frac{0.2}{2}[e^{-(-1)^2}+2\sum_{j=1}^{n-1}e^{-(x_i)^2}+e^{-(1)^2}] - \frac{1-(-1)}{12}(0.2)^2[-2*e^{-u^2}(1-2u^2)]$$
+%
+% $$ \int_{-1}^1e^{-x^2}dx = 1.4887 + 0.0133e^{-u^2}(1-2u), \hspace{5mm}u\in(-1,1) $$
+%
+% ** REGLA COMPUESTA DE SIMPSON
+%
+% De la misma manera que en la Regla Compuesta del Trapecio, dividimos el
+% intervalo de integración en subintervalos. En este caso, tomaremos dos
+% intervalos para tener tres puntos y aplicar la Regla de Simpson en ellos.
+% 
+% Debido a que los puntos extremos de cada subintervalo forman parte de dos
+% parábolas (excepto los puntos de integración), multiplicamos por 2 cada
+% punto con subíndice par. En los puntos medios de cada
+% parábola aplicamos la definición de la Regla de Simpson, de manera que
+% multiplicaremos por cuatro los puntos con subíndice impar.
+% 
+% $$ \int_a^bf(x)dx = \frac{h}{3}[f(a)+2\sum_{j=1}^{\frac{n}{2}-1}f(x_{2j})+4\sum_{j=1}^{\frac{n}{2}}f(x_{2j-1})+f(b)] -
+% \frac{b-a}{180}h^4f^{(4)}(u)\hspace{5mm}u\in(a,b) $$
+%
+% Donde
+%%
+% * $$ n $$ = número de intervalos
+% * $$ h = \frac{b-a}{n} $$
+% * $$ xj = a + jh, \hspace{5mm}j = 0,1,2,...,n $$
+%
+% Y el último término es un ajuste que permite la igualdad entre la
+% integración analítica y la Regla Compuesta de Simpson
+%
+% Ejemplo para $$ e^{-x^2} $$ con $$ n = 10 $$ en [-1, 1]
+%%
+% * $$ n = 10 $$
+% * $$ h = \frac{1-(-1)}{10} = 0.2 $$
+% * $$ xj = -1 + 0.2*j, \hspace{5mm}j = 0,1,2,...,10 $$
+%
+% $$ \int_{-1}^1e^{-x^2}dx = \frac{0.2}{3}[e^{-(-1)^2}+2\sum_{j=1}^{\frac{n}{2}-1}e^{-(x_{2j})^2}+4\sum_{j=1}^{\frac{n}{2}}e^{-(x_{2j-1})^2}+e^{-(1)^2}] - \frac{1-(-1)}{180}(0.2)^2[-4e^{-u^2}(-4u^2+12u^2-3)]$$
+%
+% $$ \int_{-1}^1e^{-x^2}dx = 1.4936 + 0.00007e^{-u^2}(-4u^2+12u^2-3), \hspace{5mm}u\in(-1,1) $$
+%
+
+%% PROBLEMA 1
+% Para el PR04 reporte la grafica de la simulación númerica de la convolución y compare con el resultado análitico que 
+% obtuvo para el problema 1, esto es, su práctica tendrá que incluir una llamada a la funciónn convconm y posteriormente 
+% se tendrá que mostrar (mediante el Publish) la gráfica tanto de las señales invlucradas como el resultado de 
+% la convolución, y en esta última gráficara su resultado analitico, se tendrá que incluir el resultado analitico.
+% REALICE LA CONVOLUCION DE LAS SIGUIENTES SEÑALES 
+%%
+%
+%FIGURA 1 
+figure(1);
+h=@(t) ((-t+1).*((t>=0)&(t<1))+(t-1).*((t>=1)&(t<2)));
+t = (-0.01:0.01:3);
+s=h(t);
+plot (t,s);
+grid on; 
+axis([-1 3 -1 2]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+
+%%
+%
+%FIGURA 2 
+figure(2);
+x=@(t) 1.*((t>=0)&(t<1));
+t = (-0.01:0.01:3);
+s=x(t);
+plot (t,s);
+grid on; 
+axis([-1 2 -1 2]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+%%
+%
+%CONVOLUCION
+h=@(t) ((-t+1).*((t>=0)&(t<1))+(t-1).*((t>=1)&(t<2)));
+x=@(t) 1.*((t>=0)&(t<1));
+f=@(t) ((-t.^2)/2 + t).*((t>=0)&(t<1))+ (t.^2 - 3.*t + 5/2).*((t>=1)&(t<2))+(-(t.^2)/2 + 2.*t - 3/2).*((t>=2)&(t<3));
+
+convconm2(x, h, f, -1, 4, -1, 2, -1, 2, -1:.1:4);
+%%
+%
+% RESULTADO ANALITICO 
+%
+%
+% $$ (-t+1)[u(t)-u(t-1)]+(t-1)[u(t-1)-u(t-2)] * 1[u(t)-u(t-1)]
+% = \left\{ \begin{array}{lcc}
+%            0 & si & t<0
+%              \\\frac{-t^2}{2}+t &  si & 0 < t < 1 \\
+%             \\t^2 - 3t +\frac{5}{2} & si & 1<t<2
+%             \\\frac{-t^2}{2} + 2t -\frac{3}{2} & si & 2<t<3
+%             \\ 0 & si & t>3
+%             \end{array}
+%   \right.$
+%
+%% PROBLEMA 2 
+% Para el PR04 reporte la grafica de la simulación númerica de la convolución y compare con el resultado análitico que 
+% obtuvo para el problema 3, esto es, su práctica tendrá que incluir una llamada a la funciónn convconm y posteriormente 
+% se tendrá que mostrar (mediante el Publish) la gráfica tanto de las señales invlucradas como el resultado de 
+% la convolución, y en esta última gráficara su resultado analitico, se tendrá que incluir el resultado analitico.
+% REALICE LA CONVOLUCION DE LAS SIGUIENTES SEÑALES 
+%%
+%
+%FIGURA 3
+figure(3);
+p=@(t)t.*(t<1)+(t>=1)-t.*(t<0)-(t>2);
+t = (-0.01:0.01:3);
+s=p(t);
+plot (t,s);
+grid on; 
+axis([-1 4 -1 2]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+%%
+%
+%FIGURA 4 
+figure(4);
+p = @(t) (t>=1)-(t>=3);
+t = (0.999:0.01:3.1);
+s=p(t);
+plot (t,s);
+grid on; 
+axis([-1 4 -1 2]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+%%
+%
+%CONVOLUCION
+h = @(t) t.*(t<1)+(t>=1)-t.*(t<0)-(t>2);
+x = @(t) ((t>=1) & (t<3));
+f = @(t) (0.5-t+0.5*(2.^t)).*(t>=1 & t<2) + (t-(3/2)).*(t>=2 & t<3) + (-3+3*t-0.5*(2.^t)).*(t>=3 & t<4) + (5-t).*(t>=4 & t<5);
+convconm2(x, h, f, -1, 6, -1, 2, -1, 5, 0:.1:6);
+%%
+%
+% RESULTADO ANALITICO 
+% $$t[u(t)-u(t-1)]+u(t-1)-u(t-2) * [u(t-1)-u(t-3)]
+% = \left\{ \begin{array}{lcc}
+%            0 & si & t<1
+%             \\\frac{1}{2}-t+\frac{t^2}{2} &  si & 1 < t < 2 \\
+%             \\ t-\frac{3}{2} & si & 2<t<3
+%             \\-3+3t-\frac{1}{2}t^{2} & si & 3<t<4
+%             \\5-t & si & 4<t<5
+%             \\0 & si & t>5
+%             \end{array}
+%   \right.$
+
+
+%% PROBLEMA 3
+% Para el PR06 reporte la grafica de la simulación númerica de la correalción y compare con el resultado análitico
+% que obtuvo para el problema f), esto es, su práctica tendrá que incluir una llamada a la funciónn convconm y 
+% posteriormente se tendrá que mostrar (mediante el Publish) la gráfica tanto de las señales involucradas como el 
+% resultado de su correlación, y en esta última graficara su resultado analitico, se tendrá que incluir el resultado 
+% analitico.
+% Realice la correlacion de las señales en las figuras 5 y 6
+
+%%
+%
+% Figura 5
+figure;
+h=@(t) 1.*((t>=0)&(t<3))-1.*((t>=3)&(t<4));
+t = (-0.01:0.01:6);
+s=h(t);
+plot (t,s);
+grid on; 
+axis([-1 6 -3 2]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+
+%%
+%
+%  Figura 6
+figure;
+x=@(t) -1.*((t>=-4)&(t<-3))+1.*((t>=-3)&(t<0));
+t = (-5:0.01:2);
+s=x(t);
+plot (t,s);
+grid on; 
+axis([-5 2 -3 2]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+
+
+f=@(t)  (-4-t).*((t>=-4)&(t<-3))+(t+2).*((t>=-3)&(t<-1))+(4+3.*t).*((t>=-1)&(t<0))+(-3.*t+4).*((t>=0)&(t<1))+(-t+2).*((t>=1)&(t<3))+(-4+t).*((t>=3)&(t<4));
+
+%%
+%
+% RESULTADO CORRELACION
+f=@(t)  (-4-t).*((t>=-4)&(t<-3))+(t+2).*((t>=-3)&(t<-1))+(4+3.*t).*((t>=-1)&(t<0))+(-3.*t+4).*((t>=0)&(t<1))+(-t+2).*((t>=1)&(t<3))+(-4+t).*((t>=3)&(t<4));
+x=@(t) -1.*((t>=-4)&(t<-3))+1.*((t>=-3)&(t<0));
+h=@(t) 1.*((t>=0)&(t<3))-1.*((t>=3)&(t<4));
+
+convconm2(x, h, f, -6, 6, -2, 6, -3, 6, -6:.1:6);
+
+
+%%
+%
+% RESULTADO ANALITICO 
+%
+%
+% $$ f(t)
+% = \left\{ \begin{array}{lcc}
+%            0 & si & t<-4
+%             \\-4-t &  si & -4 < t < -3 \\
+%             \\t+2 & si & -3<t<-1
+%             \\4+3t & si & -1<t<0
+%             \\4-3t & si & 0<t<1
+%             \\-t+2 & si & 1<t<3
+%             \\-4+t & si & 3<t<4
+%             \\ 0 & si & t>4
+%             \end{array}
+%   \right.$
+
+
+%% PROBLEMA 4
+% Para el PR06 reporte la grafica de la simulación númerica de la correalción y compare con el resultado análitico
+% que obtuvo para el problema f), esto es, su práctica tendrá que incluir una llamada a la funciónn convconm y 
+% posteriormente se tendrá que mostrar (mediante el Publish) la gráfica tanto de las señales involucradas como el 
+% resultado de su correlación, y en esta última graficara su resultado analitico, se tendrá que incluir el resultado 
+% analitico.
+% Realice la correlacion de las señales en las figuras 7 y 8 
+%%
+%
+%FIGURA 7
+figure(7);
+f= @(t) (t>=0)-2*(t>2)+2*(t>=4);
+t= 0:0.001:4;
+y= f(t);
+plot (t,y);
+grid on; 
+axis([-1 5 -2 2]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+%%
+%
+%FIGURA 8
+figure(8)
+f= @(t) (t>=0)-2*(t>=3)+2*(t>=4);
+t= 0:0.001:4;
+y= f(t);
+plot (t,y);
+grid on 
+axis([-1 5 -2 2]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+%%
+%
+%%RESULTADO CORRELACION
+x = @(t) 1.*((t>=0 & t<3) - (t>=3 & t<4));
+h = @(t) 1.*(-(t>=-4 & t<-2) + (t>=-2 & t<0));
+f = @(t) (-4-t).*(t>=-4 & t<-2) + (t).*(t>=-2 & t<-1) + (3*t+2).*(t>=-1 & t<0) + (2+t).*(t>=0 & t<1) + (-3*t+6).*(t>=1 & t<2) + (2-t).*(t>=2 & t<3) + (-4+t).*(t>=3 & t<4);
+convconm2(x, h, f, -5, 5, -2, 2, -3, 4, -4.25:.1:4.25)
+
+%%
+%
+% RESULTADO ANALITICO 
+% $$t[u(t)-u(t-1)]+u(t-1)-u(t-2) * [u(t-1)-u(t-3)]
+% = \left\{ \begin{array}{lcc}
+%            0 & si & t<-4
+%             \\-4-t  &  si & -4 < t < -3 \\
+%             \\ t+2 & si & -3<t<-2
+%             \\3t+6 & si & -2<t<-1
+%             \\-t+2 & si & -1<t<0
+%             \\-3t+2 & si & 0<t<1
+%             \\-t & si & 1<t<2
+%             \\-4+t & si & 2<t<4
+%             \\0 & si & t>4
+%             \end{array}
+%   \right.$
+%
+##### SOURCE END #####
+--></body></html>

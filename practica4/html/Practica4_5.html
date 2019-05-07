@@ -1,0 +1,170 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>PROBLEMA 4</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-05-07"><meta name="DC.source" content="Practica4_5.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>PROBLEMA 4</h1><!--introduction--><p>Para el PR06 reporte la grafica de la simulaci&oacute;n n&uacute;merica de la correalci&oacute;n y compare con el resultado an&aacute;litico que obtuvo para el problema f), esto es, su pr&aacute;ctica tendr&aacute; que incluir una llamada a la funci&oacute;nn convconm y posteriormente se tendr&aacute; que mostrar (mediante el Publish) la gr&aacute;fica tanto de las se&ntilde;ales involucradas como el resultado de su correlaci&oacute;n, y en esta &uacute;ltima graficara su resultado analitico, se tendr&aacute; que incluir el resultado analitico. Realice la correlacion de las se&ntilde;ales en las figuras 5 y 6</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">RESULTADO CORRELACION</a></li></ul></div><p>Figura 5</p><pre class="codeinput">figure;
+h=@(t) 1.*((t&gt;=0)&amp;(t&lt;3))-1.*((t&gt;=3)&amp;(t&lt;4));
+t = (-0.01:0.01:6);
+s=h(t);
+plot (t,s);
+grid <span class="string">on</span>;
+axis([-1 6 -3 2]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+</pre><img vspace="5" hspace="5" src="Practica4_5_01.png" alt=""> <pre>Figura 6</pre><pre class="codeinput">figure;
+x=@(t) -1.*((t&gt;=-4)&amp;(t&lt;-3))+1.*((t&gt;=-3)&amp;(t&lt;0));
+t = (-5:0.01:2);
+s=x(t);
+plot (t,s);
+grid <span class="string">on</span>;
+axis([-5 2 -3 2]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+
+
+f=@(t)  (-4-t).*((t&gt;=-4)&amp;(t&lt;-3))+(t+2).*((t&gt;=-3)&amp;(t&lt;-1))+(4+3.*t).*((t&gt;=-1)&amp;(t&lt;0))+(-3.*t+4).*((t&gt;=0)&amp;(t&lt;1))+(-t+2).*((t&gt;=1)&amp;(t&lt;3))+(-4+t).*((t&gt;=3)&amp;(t&lt;4));
+</pre><img vspace="5" hspace="5" src="Practica4_5_02.png" alt=""> <h2 id="3">RESULTADO CORRELACION</h2><pre class="codeinput">f=@(t)  (-4-t).*((t&gt;=-4)&amp;(t&lt;-3))+(t+2).*((t&gt;=-3)&amp;(t&lt;-1))+(4+3.*t).*((t&gt;=-1)&amp;(t&lt;0))+(-3.*t+4).*((t&gt;=0)&amp;(t&lt;1))+(-t+2).*((t&gt;=1)&amp;(t&lt;3))+(-4+t).*((t&gt;=3)&amp;(t&lt;4));
+x=@(t) -1.*((t&gt;=-4)&amp;(t&lt;-3))+1.*((t&gt;=-3)&amp;(t&lt;0));
+h=@(t) 1.*((t&gt;=0)&amp;(t&lt;3))-1.*((t&gt;=3)&amp;(t&lt;4));
+
+convconm2(x, h, f, -6, 6, -2, 6, -3, 6, -6:.1:6);
+</pre><img vspace="5" hspace="5" src="Practica4_5_03.png" alt=""> <p>RESULTADO ANALITICO</p><p><img src="Practica4_5_eq03153328916140243348.png" alt="$$ f(t) = \left\{ \begin{array}{lcc}            0 &amp; si &amp; t<-4             \\-4-t &amp;  si &amp; -4 < t < -3 \\             \\t+2 &amp; si &amp; -3<t<-1             \\4+3t &amp; si &amp; -1<t<0             \\4-3t &amp; si &amp; 0<t<1             \\-t+2 &amp; si &amp; 1<t<3             \\-4+t &amp; si &amp; 3<t<4             \\ 0 &amp; si &amp; t&gt;4             \end{array}   \right.$"></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% PROBLEMA 4 
+% Para el PR06 reporte la grafica de la simulación númerica de la correalción y compare con el resultado análitico
+% que obtuvo para el problema f), esto es, su práctica tendrá que incluir una llamada a la funciónn convconm y 
+% posteriormente se tendrá que mostrar (mediante el Publish) la gráfica tanto de las señales involucradas como el 
+% resultado de su correlación, y en esta última graficara su resultado analitico, se tendrá que incluir el resultado 
+% analitico.
+% Realice la correlacion de las señales en las figuras 5 y 6
+
+%%
+%
+% Figura 5
+figure;
+h=@(t) 1.*((t>=0)&(t<3))-1.*((t>=3)&(t<4));
+t = (-0.01:0.01:6);
+s=h(t);
+plot (t,s);
+grid on; 
+axis([-1 6 -3 2]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+
+%%
+%
+%  Figura 6
+figure;
+x=@(t) -1.*((t>=-4)&(t<-3))+1.*((t>=-3)&(t<0));
+t = (-5:0.01:2);
+s=x(t);
+plot (t,s);
+grid on; 
+axis([-5 2 -3 2]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+
+
+f=@(t)  (-4-t).*((t>=-4)&(t<-3))+(t+2).*((t>=-3)&(t<-1))+(4+3.*t).*((t>=-1)&(t<0))+(-3.*t+4).*((t>=0)&(t<1))+(-t+2).*((t>=1)&(t<3))+(-4+t).*((t>=3)&(t<4));
+
+%% RESULTADO CORRELACION
+f=@(t)  (-4-t).*((t>=-4)&(t<-3))+(t+2).*((t>=-3)&(t<-1))+(4+3.*t).*((t>=-1)&(t<0))+(-3.*t+4).*((t>=0)&(t<1))+(-t+2).*((t>=1)&(t<3))+(-4+t).*((t>=3)&(t<4));
+x=@(t) -1.*((t>=-4)&(t<-3))+1.*((t>=-3)&(t<0));
+h=@(t) 1.*((t>=0)&(t<3))-1.*((t>=3)&(t<4));
+
+convconm2(x, h, f, -6, 6, -2, 6, -3, 6, -6:.1:6);
+
+
+%%
+%
+% RESULTADO ANALITICO 
+%
+%
+% $$ f(t)
+% = \left\{ \begin{array}{lcc}
+%            0 & si & t<-4
+%             \\-4-t &  si & -4 < t < -3 \\
+%             \\t+2 & si & -3<t<-1
+%             \\4+3t & si & -1<t<0
+%             \\4-3t & si & 0<t<1
+%             \\-t+2 & si & 1<t<3
+%             \\-4+t & si & 3<t<4
+%             \\ 0 & si & t>4
+%             \end{array}
+%   \right.$
+
+
+##### SOURCE END #####
+--></body></html>
