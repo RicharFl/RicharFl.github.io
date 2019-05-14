@@ -1,0 +1,537 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Pr&aacute;ctica 5: Series de Fourier en tiempo continuo</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-05-14"><meta name="DC.source" content="Completo.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 5: Series de Fourier en tiempo continuo</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Integrantes</a></li><li><a href="#2">Objetivos</a></li><li><a href="#3">Introducci&oacute;n</a></li><li><a href="#4">Ejemplo 6.1</a></li><li><a href="#8">Ejemplo 6.2</a></li><li><a href="#14">Ejemplo 6.4</a></li><li><a href="#18">Ejemplo 6.5</a></li><li><a href="#23">Ejemplo 6.7</a></li><li><a href="#28">Comparaci&oacute;n de los coeficientes de Fourier exponenciales num&eacute;ricos y anal&iacute;ticos</a></li><li><a href="#32">Referencias</a></li></ul></div><h2 id="1">Integrantes</h2><p>Flores Lima Jos&eacute; Ricardo</p><p>Medina Bautista Sergio Cristian</p><p>Plata Montejano Lissete</p><h2 id="2">Objetivos</h2><div><ul><li>Realizar gr&aacute;ficas de series de Fourier exponenciales y trigonom&eacute;tricas en tiempo continuo</li><li>Manipulaci&oacute;n de instrucciones en MATLAB</li><li>Calculo n&uacute;merico de los coeficientes de Fourier</li></ul></div><h2 id="3">Introducci&oacute;n</h2><p>Cuando se quiere obtener la serie de Fourier de una funci&oacute;n se necesitan ciertos coeficientes, dos en el caso de la serie de Fourier trigonom&eacute;trica y uno en el caso de la serie de Fourier trigonom&eacute;trica compacta y de la serie de Fourier exponencial compleja. En el caso particular de la serie de Fourier trigonom&eacute;trica y la serie de Fourier exponencial compleja debemos de aplicar una integral para obtener dichos coeficientes, esta integral puede realizarse de manera anal&iacute;tica o num&eacute;rica.</p><p>Los m&eacute;todos de integraci&oacute;n num&eacute;ricos permiten obtener una aproximaci&oacute;n al resultado real a trav&eacute;s de calcular &aacute;reas con evaluaciones de la funci&oacute;n y otras caracter&iacute;sticas que var&iacute;an seg&uacute;n el m&eacute;todo que se utilice.</p><p>De manera que al aplicar un m&eacute;todo de integraci&oacute;n num&eacute;rico a los c&aacute;lculos de los coeficientes para las series de Fourier se obtiene una aproximaci&oacute;n a los coeficientes reales de la serie de Fourier. Exploraremos dos casos para ello.</p><div><ul><li>Coeficientes de Fourier a trav&eacute;s de la regla del trapecio compuesta</li></ul></div><p>La regla del trapecio calcula el &aacute;rea de un trapecio definido por la funci&oacute;n en un intervalo. En la regla del trapecio compuesta se extiende esta idea al subdividir el intervalo de integraci&oacute;n en varios subintervalos y aplicar en cada uno de ellos la regla del trapecio.</p><p>De manera que la f&oacute;rmula es la siguiente:</p><p><img src="Completo_eq08431210943222162965.png" alt="$$ D_n = \frac{1}{T_0}\int_{<T_0&gt;}f(t)e^{-jnw_0t}dt = \frac{h}{2T_0}[f(a)e^{-jnw_0(a)}+2\sum_{i=1}^{k-1}f(x_i)e^{-jnw_0(x_i)}+f(b)e^{-jnw_0(b)}]$$"></p><p>Donde :</p><p><img src="Completo_eq10504220877453604019.png" alt="$$ T_0 = b - a = $$"> un periodo de la funci&oacute;n</p><p><img src="Completo_eq06282252685087855265.png" alt="$$ w_0 = \frac{2\pi}{T_0} $$"></p><p><img src="Completo_eq04977081058668590031.png" alt="$$ k = $$"> n&uacute;mero de subintervalos</p><p><img src="Completo_eq14863172941955844420.png" alt="$$ h = \frac{T_0}{k} $$"></p><p><img src="Completo_eq06627272425783372210.png" alt="$$ x_i = a + ih, i = 1,2,...,k-1 $$"></p><div><ul><li>Coeficientes de Fourier a trav&eacute;s de la transformada de Fourier discreta</li></ul></div><p>En este caso, se sustituye la integral por la expresi&oacute;n de la transformada de Fourier discreta, la cual utiliza muestras de una funci&oacute;n en un periodo.</p><p><img src="Completo_eq01597902974432609018.png" alt="$$ D_n = \frac{1}{T_0}\int_{<T_0&gt;}f(t)e^{-jnw_0t}dt = \lim_{T \to \infty}\frac{1}{N_0T}\sum_{k=0}^{N_0-1}f(kT)e^{-jnw_0kT}T $$"></p><p>Donde :</p><p><img src="Completo_eq00672937272721419574.png" alt="$$ T_0 = $$"> un periodo de la funci&oacute;n</p><p><img src="Completo_eq06282252685087855265.png" alt="$$ w_0 = \frac{2\pi}{T_0} $$"></p><p><img src="Completo_eq03691215884921771863.png" alt="$$ T =  $$"> el tiempo entre cada muestra</p><p><img src="Completo_eq00393898158540568512.png" alt="$$ N_0 = \frac{T_0}{T}$$"></p><p>Reduciendo la ecuaci&oacute;n y tomando el valor de T muy peque&ntilde;o, obtenemos el siguiente resultado:</p><p><img src="Completo_eq07985723446936673561.png" alt="$$ D_n = \frac{1}{N_0}\sum_{k=0}^{N_0-1}f(kT)e^{-jn \Omega_0} $$"></p><p>Donde:</p><p><img src="Completo_eq15745950497452336326.png" alt="$$ \Omega_0 = w_0T = \frac{2\pi}{N_o} $$"></p><p>El obtener los coeficientes de Fourier de esta manera tiene la ventaja que cada <img src="Completo_eq12780569016122823364.png" alt="$n+N_0$"> coeficientes, los coeficientes se repiten.</p><p>Por &uacute;ltimo, se sugiere que los valores de <img src="Completo_eq14438439004078460794.png" alt="$N_0$"> sean una potencia de 2</p><h2 id="4">Ejemplo 6.1</h2><div><ul><li><b>Ejemplo 6.1</b> Con serie  y espectro trigonometrico, no es necesario entregar el c&oacute;digo, solo la aplicaci&oacute;n al problema especifico, debe de indicar la funci&oacute;n y los valores de sus coeficientes (sin incluir el procedimiento)</li></ul></div><p>GRAFICA ORIGINAL</p><pre class="codeinput">figure(1);
+f=@(t) exp(-t/2) .*((t&gt;=0)&amp;(t&lt;pi));
+t = (-5:0.01:5);
+s=f(t);
+plot (t,s);
+grid <span class="string">on</span>;
+axis([-1 5 -1 2]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+
+<span class="comment">% $$ f(t)= e^{-t/2}$$</span>
+</pre><img vspace="5" hspace="5" src="Completo_01.png" alt=""> <p>SERIE DE FOURIER PARA 4 ARMONICOS</p><pre class="codeinput">figure(2);
+ejem1();
+</pre><pre class="codeoutput">C0 = 0.504
+C1 = 0.24448
+C2 = 0.062877
+C3 = 0.015748
+C4 = 0.0039375
+</pre><img vspace="5" hspace="5" src="Completo_02.png" alt=""> <img vspace="5" hspace="5" src="Completo_03.png" alt=""> <p>SERIE DE FOURIER PARA 15 ARMONICOS</p><pre class="codeinput">figure (3);
+ejem115();
+</pre><pre class="codeoutput">C0 = 0.504
+C1 = 0.24448
+C2 = 0.062877
+C3 = 0.015748
+C4 = 0.0039375
+C5 = 0.00098437
+C6 = 0.00024609
+C7 = 6.1523e-05
+C8 = 1.5381e-05
+C9 = 3.8452e-06
+C10 = 9.613e-07
+C11 = 2.4033e-07
+C12 = 6.0081e-08
+C13 = 1.502e-08
+C14 = 3.7551e-09
+C15 = 9.3877e-10
+</pre><img vspace="5" hspace="5" src="Completo_04.png" alt=""> <img vspace="5" hspace="5" src="Completo_05.png" alt=""> <h2 id="8">Ejemplo 6.2</h2><div><ul><li><b>Ejemplo 6.2.</b> Con serie y espectro exponencial y A=3,  no es necesario entregar el c&oacute;digo, solo la aplicaci&oacute;n al problema especifico, debe de indicar la funci&oacute;n y los valores de sus coeficientes (sin incluir el procedimiento)</li></ul></div><p>GR&Aacute;FICA ORIGINAL</p><pre class="codeinput">figure(4);
+grafica6_2();
+</pre><img vspace="5" hspace="5" src="Completo_06.png" alt=""> <p><img src="Completo_eq10488485500022574431.png" alt="$$f(t) = \left\{ \begin{array}{lcc}            0 &amp; si &amp; t<-\frac{1}{2} \\             \\6t &amp; si &amp; -\frac{1}{2}<t<\frac{1}{2} \\             \\6(1-t) &amp; si &amp; \frac{1}{2}<t<\frac{3}{2} \\             \\0 &amp; si &amp; t&gt;\frac{3}{2}             \end{array}   \right.$"></p><p>Por lo que para su serie de Fourier tenemos que <img src="Completo_eq02486834540207135553.png" alt="$$d_n=\frac{-12}{\pi^{2}n^{2}}\sin(n\frac{\pi}{2})j$">$</p><p>SERIE DE FOURIER PARA 4 ARMONICOS</p><pre class="codeinput">figure(5);
+Ejemplo_6_2_4();
+</pre><img vspace="5" hspace="5" src="Completo_07.png" alt=""> <img vspace="5" hspace="5" src="Completo_08.png" alt=""> <p>SERIE DE FOURIER PARA 15 ARMONICOS</p><pre class="codeinput">figure(6);
+Ejemplo_6_2_15();
+<span class="comment">%</span>
+</pre><img vspace="5" hspace="5" src="Completo_09.png" alt=""> <img vspace="5" hspace="5" src="Completo_10.png" alt=""> <h2 id="14">Ejemplo 6.4</h2><div><ul><li><b>Ejemplo 6.4.</b> Con serie y espectro exponencial,  no es necesario entregar el c&oacute;digo, solo la aplicaci&oacute;n al problema especifico, debe de indicar la funci&oacute;n y los valores de sus coeficientes (sin incluir el procedimiento)</li></ul></div><p>GRAFICA ORIGINAL</p><pre class="codeinput">figure(7);
+f=@(t) 1.*(t&gt;=(-pi/2) &amp; t&lt;(pi/2))+0.*(t&gt;=(pi/2) &amp; t&lt;=(3*pi/2));
+t = (-5:0.01:4);
+s=f(t);
+plot (t,s);
+grid <span class="string">on</span>;
+axis([-3 3 -1 2]);
+ax=gca;
+ax.XAxisLocation = <span class="string">'origin'</span>;
+ax.YAxisLocation = <span class="string">'origin'</span>;
+ax.Box=<span class="string">'off'</span>;
+
+<span class="comment">% $$ f(t)= 1   -pi/2&lt;t&lt;pi/2$$</span>
+</pre><img vspace="5" hspace="5" src="Completo_11.png" alt=""> <p>SERIE DE FOURIER PARA 4 ARMONICOS</p><pre class="codeinput">figure(8);
+Ejem44();
+</pre><img vspace="5" hspace="5" src="Completo_12.png" alt=""> <img vspace="5" hspace="5" src="Completo_13.png" alt=""> <p>SERIE DE FOURIER PARA 15 ARMONICOS</p><pre class="codeinput">figure(9);
+Ejem415();
+</pre><img vspace="5" hspace="5" src="Completo_14.png" alt=""> <img vspace="5" hspace="5" src="Completo_15.png" alt=""> <h2 id="18">Ejemplo 6.5</h2><div><ul><li><b>Ejercicio 6.5.</b> Con serie y espectro exponencial,  no es necesario entregar el c&oacute;digo, solo la aplicaci&oacute;n al problema especifico, debe de indicar la funci&oacute;n y los valores de sus coeficientes (sin incluir el procedimiento)</li></ul></div><p>GRAFICA ORIGINAL</p><pre class="codeinput">figure(10);
+graficaejem65();
+</pre><img vspace="5" hspace="5" src="Completo_16.png" alt=""> <p><img src="Completo_eq17404035453079776980.png" alt="$$ f(t)= e^{-t}$$"></p><p>SERIE DE FOURIER PARA 4 ARMONICOS</p><pre class="codeinput">figure(11);
+Ejemplo_6_5_4();
+<span class="comment">%</span>
+</pre><img vspace="5" hspace="5" src="Completo_17.png" alt=""> <img vspace="5" hspace="5" src="Completo_18.png" alt=""> <p>SERIE DE FOURIER PARA 15 ARMONICOS</p><pre class="codeinput">figure(12);
+Ejemplo_6_5_15();
+<span class="comment">%</span>
+</pre><img vspace="5" hspace="5" src="Completo_19.png" alt=""> <img vspace="5" hspace="5" src="Completo_20.png" alt=""> <h2 id="23">Ejemplo 6.7</h2><div><ul><li><b>Ejemplo 6.7.</b> Con serie y espectro exponencial y <img src="Completo_eq04356084194358646376.png" alt="$T_0=3$"> sin incluir la gr&aacute;fica de f, error ni energ&iacute;a del error,  no es necesario entregar el c&oacute;digo, solo la aplicaci&oacute;n al problema especifico, debe de indicar la funci&oacute;n y los valores de sus coeficientes (sin incluir el procedimiento)</li></ul></div><p>Serie de Fourier de la funci&oacute;n:</p><p><img src="Completo_eq04083205737098016013.png" alt="$$ \sum_{n=-\infty}^{\infty} \delta(t-3n)$$"></p><p>Los coeficientes de la serie de Fourier exponencial compleja est&aacute;n dados por:</p><p><img src="Completo_eq08610089051600284671.png" alt="$$D_n = \frac{1}{T_0} = \frac{1}{3}$$"></p><p>Para cualquier arm&oacute;nico</p><p>La serie de Fourier para 4 arm&oacute;nicos es la siguiente:</p><pre class="codeinput">dn=@(n) n/(3*n);
+sfc7(0,3,dn,1/3,4,-7,7)
+</pre><img vspace="5" hspace="5" src="Completo_21.png" alt=""> <p>Y para 15 arm&oacute;nicos es:</p><pre class="codeinput">dn=@(n) n/(3*n);
+sfc7(0,3,dn,1/3,15,-7,7)
+<span class="comment">%</span>
+<span class="comment">%</span>
+</pre><img vspace="5" hspace="5" src="Completo_22.png" alt=""> <div><ul><li>Elabore un c&oacute;digo similar al COMPUTER EXAMPLE C6.2 que se encuentra al final de la secci&oacute;n 6.2 de Lathi para el Ejempo 6.2 con los datos indicados anteriormente (no utilice inline)</li></ul></div><pre class="codeinput">clf
+x =@(t) exp(-t/2) ;
+t = [0:0.01:25];
+plot(t,x(mod(t,pi)))
+
+
+
+sumterms = zeros(16, length(t));
+sumterms(1,:) = 0.504;
+<span class="keyword">for</span> n = 1:size(sumterms,1)-1;
+sumterms(n+1,:) = 0.504/(1+4*n*j).*exp(2*n*t*j);
+<span class="keyword">end</span>
+x_N = cumsum (sumterms);
+figure(20);
+clf;
+ind = 0;
+
+<span class="keyword">for</span> N = [0,1:2:size(sumterms, 1)-1];
+ind = ind+1;
+subplot (3,3,ind);
+plot (t,x_N(N+1,:), <span class="string">'k'</span>, t ,x(mod(t,pi))+0j,<span class="string">'r--'</span>);
+axis ([0 20 -0.2 1.2]);
+xlabel (<span class="string">'t'</span>);
+ylabel ([<span class="string">'x_{'</span>,num2str(N),<span class="string">'} (t)'</span>]);
+
+<span class="keyword">end</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+</pre><pre class="codeoutput">Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+</pre><img vspace="5" hspace="5" src="Completo_23.png" alt=""> <img vspace="5" hspace="5" src="Completo_24.png" alt=""> <div><ul><li>Elabore un c&oacute;digo que implemente el algoritmo de trapecio compuesto para <img src="Completo_eq08501079337458606022.png" alt="$n=15$">, Utilice este c&oacute;digo para aproximar <img src="Completo_eq12324390629844581234.png" alt="$D_0,...,D_4$"> del ejemplo de la pr&aacute;ctica. Ahora implemente el c&oacute;digo COMPUTER EXAMPLE C6.4 que se encuentra al final de la secci&oacute;n 6.6 de Lathi, y calcule nuevamente el los coeficientes <img src="Completo_eq12324390629844581234.png" alt="$D_0,...,D_4$"> del ejemplo propuesto. Muestre una tabla que contenga los coeficientes mencionados calculados con los dos algoritmos y de forma exacta, &iquest;Qu&eacute; algortmo aproxima mejor a los coeficientes?, para esto compare los coefientes con el valor absoluto de la resta.</li></ul></div><h2 id="28">Comparaci&oacute;n de los coeficientes de Fourier exponenciales num&eacute;ricos y anal&iacute;ticos</h2><p>Los coeficientes de la funci&oacute;n: <img src="Completo_eq00284717470456365205.png" alt="$$e^{-\frac{x}{2}}$">$ son calculados por:</p><p><img src="Completo_eq17594852106604983216.png" alt="$$D_n = \frac{0.504}{1+4nj}$$"></p><pre class="codeinput">n = 0:15;
+analitico = 0.504./(1+4*n*j);
+analitico = analitico';
+</pre><p>Se definen los coeficientes a trav&eacute;s de la regla del trapecio compuesta</p><pre class="codeinput">f = @(t) exp(-t/2);
+trapecio = zeros(16, 1);
+<span class="keyword">for</span> in=1:16
+    trapecio(in) = dntrapecio(0, pi, f, in-1);
+<span class="keyword">end</span>
+</pre><p>Se definen los coeficientes a trav&eacute;s de la transformsda discreta de Fourier (example C6.4)</p><pre class="codeinput">discreto=C6_4(pi, 512, 15);
+</pre><p>Realizamos la comparaci&oacute;n:</p><pre class="codeinput">error_analitico_trapecio = abs( trapecio-analitico  );
+error_analitico_discreto = abs( discreto-analitico  );
+table(analitico, trapecio, discreto, error_analitico_trapecio, error_analitico_discreto)
+</pre><pre class="codeoutput">
+ans =
+
+  16&times;5 table
+
+          analitico                trapecio                 discreto           error_analitico_trapecio    error_analitico_discreto
+    _____________________    _____________________    _____________________    ________________________    ________________________
+
+         0.504+0i                0.5045+0i               0.50469+0i            0.00049557                  0.00068593              
+      0.029647+0.11859i         0.02988-0.11865i        0.029798-0.11895i         0.23724                     0.23754              
+     0.0077538+0.062031i      0.0079742-0.062065i      0.0077953-0.062229i         0.1241                     0.12426              
+     0.0034759+0.04171i       0.0036938-0.041734i      0.0034951-0.041843i       0.083444                    0.083553              
+     0.0019611+0.031377i      0.0021782-0.031395i      0.0019724-0.031475i       0.062773                    0.062852              
+     0.0012569+0.025137i      0.0014736-0.025151i      0.0012645-0.025212i       0.050289                    0.050349              
+    0.00087348+0.020964i        0.00109-0.020976i      0.0008791-0.021023i        0.04194                    0.041987              
+    0.00064204+0.017977i     0.00085844-0.017987i     0.00064644-0.018026i       0.035965                    0.036003              
+    0.00049171+0.015735i     0.00070803-0.015744i     0.00049532-0.015774i       0.031479                    0.031509              
+    0.00038859+0.013989i     0.00060485-0.013997i     0.00039166-0.014021i       0.027987                    0.028011              
+     0.0003148+0.012592i     0.00053103-0.0126i       0.00031748-0.012618i       0.025193                     0.02521              
+     0.0002602+0.011449i     0.00047639-0.011456i     0.00026259-0.011469i       0.022905                    0.022918              
+    0.00021866+0.010495i     0.00043483-0.010502i     0.00022083-0.010511i       0.020998                    0.021007              
+    0.00018632+0.0096887i    0.00040248-0.0096947i    0.00018832-0.0097003i      0.019385                    0.019389              
+    0.00016066+0.0089971i     0.0003768-0.0090028i    0.00016253-0.0090048i      0.018001                    0.018002              
+    0.00013996+0.0083977i    0.00035609-0.008403i     0.00014172-0.0084018i      0.016802                    0.016799              
+
+</pre><h2 id="32">Referencias</h2><p><a href="https://es.mathworks.com/products/matlab.html">Matlab</a></p><p><a href="https://www.amazon.com/Linear-Systems-Signals-2nd-Lathi/dp/0195158334">Lathi</a></p><p><a href="http://dea.unsj.edu.ar/control2/matlab%20para%20ingenieros.pdf">Matlab ejemplos</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Práctica 5: Series de Fourier en tiempo continuo
+
+%% Integrantes
+%
+% Flores Lima José Ricardo
+%
+% Medina Bautista Sergio Cristian
+%
+% Plata Montejano Lissete
+
+%% Objetivos
+% * Realizar gráficas de series de Fourier exponenciales y trigonométricas en tiempo continuo
+% * Manipulación de instrucciones en MATLAB
+% * Calculo númerico de los coeficientes de Fourier
+
+%% Introducción
+% Cuando se quiere obtener la serie de Fourier de una función se necesitan ciertos coeficientes, dos en el caso de la serie de Fourier trigonométrica y uno en el caso de la serie de Fourier trigonométrica compacta y de la serie de Fourier exponencial compleja. En el caso particular de la serie de Fourier trigonométrica y la serie de Fourier exponencial compleja debemos de aplicar una integral para obtener dichos coeficientes, esta integral puede realizarse de manera analítica o numérica.
+%
+% Los métodos de integración numéricos permiten obtener una aproximación al resultado real a través de calcular áreas con evaluaciones de la función y otras características que varían según el método que se utilice. 
+%
+% De manera que al aplicar un método de integración numérico a los cálculos de los coeficientes para las series de Fourier se obtiene una aproximación a los coeficientes reales de la serie de Fourier. Exploraremos dos casos para ello. 
+%
+% * Coeficientes de Fourier a través de la regla del trapecio compuesta
+%
+% La regla del trapecio calcula el área de un trapecio definido por la función en un intervalo. En la regla del trapecio compuesta se extiende esta idea al subdividir el intervalo de integración en varios subintervalos y aplicar en cada uno de ellos la regla del trapecio. 
+%
+% De manera que la fórmula es la siguiente:
+%
+% $$ D_n = \frac{1}{T_0}\int_{<T_0>}f(t)e^{-jnw_0t}dt = \frac{h}{2T_0}[f(a)e^{-jnw_0(a)}+2\sum_{i=1}^{k-1}f(x_i)e^{-jnw_0(x_i)}+f(b)e^{-jnw_0(b)}]$$
+%
+% Donde : 
+%
+% $$ T_0 = b - a = $$ un periodo de la función
+%
+% $$ w_0 = \frac{2\pi}{T_0} $$
+%
+% $$ k = $$ número de subintervalos
+%
+% $$ h = \frac{T_0}{k} $$
+%
+% $$ x_i = a + ih, i = 1,2,...,k-1 $$
+%
+% * Coeficientes de Fourier a través de la transformada de Fourier discreta
+%
+% En este caso, se sustituye la integral por la expresión de la transformada de Fourier discreta, la cual utiliza muestras de una función en un periodo.
+%
+% $$ D_n = \frac{1}{T_0}\int_{<T_0>}f(t)e^{-jnw_0t}dt = \lim_{T \to \infty}\frac{1}{N_0T}\sum_{k=0}^{N_0-1}f(kT)e^{-jnw_0kT}T $$
+%
+% Donde : 
+%
+% $$ T_0 = $$ un periodo de la función
+%
+% $$ w_0 = \frac{2\pi}{T_0} $$
+%
+% $$ T =  $$ el tiempo entre cada muestra
+%
+% $$ N_0 = \frac{T_0}{T}$$
+%
+% Reduciendo la ecuación y tomando el valor de T muy pequeño, obtenemos el siguiente resultado:
+%
+% $$ D_n = \frac{1}{N_0}\sum_{k=0}^{N_0-1}f(kT)e^{-jn \Omega_0} $$
+%
+% Donde:  
+%
+% $$ \Omega_0 = w_0T = \frac{2\pi}{N_o} $$
+% 
+% El obtener los coeficientes de Fourier de esta manera tiene la ventaja que cada $n+N_0$ coeficientes, los coeficientes se repiten. 
+% 
+% Por último, se sugiere que los valores de $N_0$ sean una potencia de 2
+
+%% Ejemplo 6.1
+%%
+%
+% * *Ejemplo 6.1* Con serie  y espectro trigonometrico, no es
+% necesario entregar el código, solo la aplicación al problema especifico,
+% debe de indicar la función y los valores de sus coeficientes (sin incluir
+% el procedimiento)
+%
+%
+% GRAFICA ORIGINAL 
+figure(1);
+f=@(t) exp(-t/2) .*((t>=0)&(t<pi));
+t = (-5:0.01:5);
+s=f(t);
+plot (t,s);
+grid on; 
+axis([-1 5 -1 2]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+
+% $$ f(t)= e^{-t/2}$$
+
+%%
+% SERIE DE FOURIER PARA 4 ARMONICOS 
+figure(2);
+ejem1();
+
+
+
+%%
+% SERIE DE FOURIER PARA 15 ARMONICOS 
+figure (3);
+ejem115();
+
+%% Ejemplo 6.2
+
+%%
+%
+% * *Ejemplo 6.2.* Con serie y espectro exponencial y A=3,  no es
+% necesario entregar el código, solo la aplicación al problema especifico,
+% debe de indicar la función y los valores de sus coeficientes (sin incluir
+% el procedimiento)
+%
+% GRÁFICA ORIGINAL 
+%
+figure(4);
+grafica6_2();
+%%    
+% $$f(t)
+% = \left\{ \begin{array}{lcc}
+%            0 & si & t<-\frac{1}{2} \\
+%             \\6t & si & -\frac{1}{2}<t<\frac{1}{2} \\
+%             \\6(1-t) & si & \frac{1}{2}<t<\frac{3}{2} \\
+%             \\0 & si & t>\frac{3}{2}
+%             \end{array}
+%   \right.$
+%%
+% Por lo que para su serie de Fourier tenemos que 
+% $$d_n=\frac{-12}{\pi^{2}n^{2}}\sin(n\frac{\pi}{2})j$$
+%%
+% SERIE DE FOURIER PARA 4 ARMONICOS 
+%
+figure(5);
+Ejemplo_6_2_4();
+%%
+% SERIE DE FOURIER PARA 15 ARMONICOS 
+%
+figure(6);
+Ejemplo_6_2_15();
+%
+%% Ejemplo 6.4
+%%
+%
+% * *Ejemplo 6.4.* Con serie y espectro exponencial,  no es
+% necesario entregar el código, solo la aplicación al problema especifico,
+% debe de indicar la función y los valores de sus coeficientes (sin incluir
+% el procedimiento)
+%
+% GRAFICA ORIGINAL 
+figure(7);
+f=@(t) 1.*(t>=(-pi/2) & t<(pi/2))+0.*(t>=(pi/2) & t<=(3*pi/2));
+t = (-5:0.01:4);
+s=f(t);
+plot (t,s);
+grid on; 
+axis([-3 3 -1 2]);
+ax=gca;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+ax.Box='off';
+
+% $$ f(t)= 1   -pi/2<t<pi/2$$
+
+%%
+% SERIE DE FOURIER PARA 4 ARMONICOS  
+
+figure(8);
+Ejem44();
+%%
+% SERIE DE FOURIER PARA 15 ARMONICOS 
+
+figure(9);
+Ejem415();
+
+%% Ejemplo 6.5
+%%
+%
+% * *Ejercicio 6.5.* Con serie y espectro exponencial,  no es
+% necesario entregar el código, solo la aplicación al problema especifico,
+% debe de indicar la función y los valores de sus coeficientes (sin incluir
+% el procedimiento)
+%
+% GRAFICA ORIGINAL 
+figure(10);
+graficaejem65();
+%%
+% $$ f(t)= e^{-t}$$
+%%
+% SERIE DE FOURIER PARA 4 ARMONICOS 
+figure(11);
+Ejemplo_6_5_4();
+%
+%%
+% SERIE DE FOURIER PARA 15 ARMONICOS  
+figure(12);
+Ejemplo_6_5_15();
+%
+
+%% Ejemplo 6.7
+%%
+%
+% * *Ejemplo 6.7.* Con serie y espectro exponencial y $T_0=3$ sin incluir la
+% gráfica de f, error ni energía del error,  no es
+% necesario entregar el código, solo la aplicación al problema especifico,
+% debe de indicar la función y los valores de sus coeficientes (sin incluir
+% el procedimiento)
+%
+% Serie de Fourier de la función:
+% 
+% $$ \sum_{n=-\infty}^{\infty} \delta(t-3n)$$
+% 
+% Los coeficientes de la serie de Fourier exponencial compleja
+% están dados por:
+%
+% $$D_n = \frac{1}{T_0} = \frac{1}{3}$$
+%
+% Para cualquier armónico
+%
+% La serie de Fourier para 4 armónicos es la siguiente: 
+%
+dn=@(n) n/(3*n);
+sfc7(0,3,dn,1/3,4,-7,7)
+%%
+% Y para 15 armónicos es:
+dn=@(n) n/(3*n);
+sfc7(0,3,dn,1/3,15,-7,7)
+%
+%
+
+%%
+% * Elabore un código similar al COMPUTER EXAMPLE C6.2 que se encuentra al 
+% final de la sección 6.2 de Lathi para el Ejempo 6.2 con los datos
+% indicados anteriormente (no utilice inline)
+%
+%
+clf
+x =@(t) exp(-t/2) ;
+t = [0:0.01:25];
+plot(t,x(mod(t,pi)))
+
+
+
+sumterms = zeros(16, length(t));
+sumterms(1,:) = 0.504;
+for n = 1:size(sumterms,1)-1;
+sumterms(n+1,:) = 0.504/(1+4*n*j).*exp(2*n*t*j);
+end
+x_N = cumsum (sumterms); 
+figure(20); 
+clf; 
+ind = 0;
+
+for N = [0,1:2:size(sumterms, 1)-1];
+ind = ind+1; 
+subplot (3,3,ind);
+plot (t,x_N(N+1,:), 'k', t ,x(mod(t,pi))+0j,'rREPLACE_WITH_DASH_DASH'); 
+axis ([0 20 -0.2 1.2]);
+xlabel ('t'); 
+ylabel (['x_{',num2str(N),'} (t)']);
+
+end
+%
+%
+%
+
+
+%%
+%
+% * Elabore un código que implemente el algoritmo de trapecio compuesto
+% para $n=15$, Utilice este código para aproximar $D_0,...,D_4$ del ejemplo
+% de la práctica. Ahora implemente el código COMPUTER EXAMPLE C6.4 que se
+% encuentra al final de la sección 6.6 de Lathi, y calcule nuevamente el
+% los coeficientes $D_0,...,D_4$ del ejemplo propuesto. Muestre una tabla
+% que contenga los coeficientes mencionados calculados con los dos
+% algoritmos y de forma exacta, ¿Qué algortmo aproxima mejor a los
+% coeficientes?, para esto compare los coefientes con el valor absoluto de
+% la resta. 
+%
+%
+%% Comparación de los coeficientes de Fourier exponenciales numéricos y analíticos
+%
+% Los coeficientes de la función: $$e^{-\frac{x}{2}}$$ son calculados por: 
+%
+% $$D_n = \frac{0.504}{1+4nj}$$
+%
+n = 0:15;
+analitico = 0.504./(1+4*n*j);
+analitico = analitico';
+%%
+% Se definen los coeficientes a través de la regla del trapecio compuesta
+f = @(t) exp(-t/2);
+trapecio = zeros(16, 1);
+for in=1:16
+    trapecio(in) = dntrapecio(0, pi, f, in-1);
+end
+%%
+% Se definen los coeficientes a través de la transformsda discreta de
+% Fourier (example C6.4)
+discreto=C6_4(pi, 512, 15);
+%% 
+% Realizamos la comparación:
+error_analitico_trapecio = abs( trapecio-analitico  );
+error_analitico_discreto = abs( discreto-analitico  );
+table(analitico, trapecio, discreto, error_analitico_trapecio, error_analitico_discreto)
+
+
+%% Referencias
+% <https://es.mathworks.com/products/matlab.html Matlab>
+%
+% <https://www.amazon.com/Linear-Systems-Signals-2nd-Lathi/dp/0195158334 Lathi>
+% 
+% <http://dea.unsj.edu.ar/control2/matlab%20para%20ingenieros.pdf Matlab ejemplos>
+
+##### SOURCE END #####
+--></body></html>
