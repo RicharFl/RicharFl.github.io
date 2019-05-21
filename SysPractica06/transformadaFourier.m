@@ -2,7 +2,7 @@ function transformadaFourier(a,b,xi,t0)
 % a coeficientes de las derivadas de la salida menor a mayor [a_0, ..., a_n]
 % b coeficientes de las derivadas de la entrada menor a mayor [b_0, ..., b_m]
 % xi función de entrada en terminos de la variable simbolica t previamente
-% declarada en el command window
+% declarada en el command windows
 % t0 tiempo final para graficar la solucion, la derivada, y la segunda 
 % derivada 
 % ejemplo: resolver y^(2)+2y^(1)+2y=x^(1)+2x con y^(1)(0)=0

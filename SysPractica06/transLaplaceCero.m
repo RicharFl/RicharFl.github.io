@@ -4,7 +4,7 @@ function transLaplaceCero(a,b,ciy,cix,xi,t0)
 % ciy condiciones iniciales de la salida de  menor a mayor [y(0), y(0)^(n-1)]
 % cix condiciones iniciales de la entrada de menor a meyor [x(0), x^(m-1)(0)]
 % xi función de entrada en terminos de la variable simbolica t previamente
-% declarada en el command window
+% declarada en el command windows
 % t0 tiempo final para graficar la solucion, la derivada, y la segunda 
 % derivada 
 % ejemplo: resolver y^(3)+y^(2)+2y^(1)+2y=3x^(2)-x^(1)+2x con y^(2)(0)=1 y^(1)=3

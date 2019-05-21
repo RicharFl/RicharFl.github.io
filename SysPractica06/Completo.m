@@ -19,24 +19,28 @@
 % total con condiciones iniciales y las gráficas correspondientes
 
 %% FUNCION 
-% $$ y^2+3y^1+2y =x^1+3x $$
+% $$ y^2+2y^1+2y =x^1+2x $$
 %
-% condiciones iniciales 
+% Condiciones Iniciales 
+% 
+% $$ \\ y^1(0^-)=0 \\ $$
 %
+% $$   \\y(0^-)=1 \\  $$
 %
-% $$ y^2 (0)=0 $$
-%  $$  y^1 (0)=2 $$
-%  $$  y (0)=1  $$
-%  $$ x (0)= cos(t)u(t)  $$
+% $$ \\ x(t)=exp(-t) $$
+%
+% $$  \\ x^1(0)=0\\ $$
+% 
+%
 
 %% PUNTO 1 
 %
 % Muestra la función de transferencia del sistema
 %
 %
-% $$(S+3)/(S^2+3S+2) $$
-n=[1 3];
-d=[1 3 2];
+% $$ \frac{S+2}{S^2+2S+2} $$
+n=[1 2];
+d=[1 2 2];
 G=tf(n,d)
 pole(G);
 step(G);
@@ -47,7 +51,7 @@ step(G);
 %
 %
 syms t
-transFourierImpulse([2 3 1],[3 1],dirac(t),10)
+transFourierImpulse([2 2 1],[2 1],dirac(t),10)
 
 %% PUNTO 3 
 %
@@ -56,7 +60,7 @@ transFourierImpulse([2 3 1],[3 1],dirac(t),10)
 %
 %
 syms t
-transLaplaceCero([2 3 1],[3 1],[1 2],[0],0*t,10)
+transLaplaceCero([2 2 1],[2 1],[1 0],[0],0*t,10)
 %
 
 
@@ -67,7 +71,7 @@ transLaplaceCero([2 3 1],[3 1],[1 2],[0],0*t,10)
 %
 %
 syms t
-transLaplaceCeroState([2 3 1],[3 1],[0 0],[0],cos(t)*heaviside(t),10)
+transLaplaceCeroState([2 2 1],[2 1],[0 0],[0],exp(-t)*heaviside(t),10)
 %
 %
 
@@ -78,7 +82,7 @@ transLaplaceCeroState([2 3 1],[3 1],[0 0],[0],cos(t)*heaviside(t),10)
 %
 %
 syms t
-transLaplaceCeroState([2 3 1],[3 1],[1 2],[0],cos(t)*heaviside(t),10)
+transLaplaceCeroState([2 2 1],[2 1],[1 0],[0],exp(-t)*heaviside(t),10)
 % 
 %
 
@@ -87,7 +91,7 @@ transLaplaceCeroState([2 3 1],[3 1],[1 2],[0],cos(t)*heaviside(t),10)
 % Se muestra la respuesta total al escalón unitario con condiciones iniciales
 % cero
 %
-transLaplaceCeroState([2 3 1],[3 1],[0 0],[0],heaviside(t),10)
+transLaplaceCeroState([2 2 1],[2 1],[0 0],[0],heaviside(t),10)
 %
 %
 
@@ -95,6 +99,6 @@ transLaplaceCeroState([2 3 1],[3 1],[0 0],[0],heaviside(t),10)
 %
 % Se muestra las respuestas simbólicas y gráficas en un subplot
 %
-sistemas( [2 3 1],[3 1],[1 2],[0],cos(t)*heaviside(t),10 )
+sistemas( [2 2 1],[2 1],[1 0],[0],exp(-t)*heaviside(t),10 )
 
 

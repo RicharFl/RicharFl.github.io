@@ -66,8 +66,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Pr&aacute;ctica 6: Sistemas diferenciales</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Integrantes</a></li><li><a href="#2">Objetivos:</a></li><li><a href="#4">Introducci&oacute;n</a></li><li><a href="#5">FUNCION</a></li><li><a href="#6">PUNTO 1</a></li><li><a href="#7">PUNTO 2</a></li><li><a href="#8">PUNTO 3</a></li><li><a href="#9">PUNTO  4</a></li><li><a href="#10">PUNTO  5</a></li><li><a href="#11">PUNTO 6</a></li><li><a href="#12">PUNTO 7</a></li></ul></div><h2 id="1">Integrantes</h2><p>Flores Lima Jos&eacute; Ricardo</p><p>Medina Bautista Sergio Cristian</p><p>Plata Montejano Lissete</p><h2 id="2">Objetivos:</h2><div><ul><li>Conocer comandos para obtener las funciones de respuesta de un sistema</li><li>Graficar las expresiones de respuesta</li></ul></div><h2 id="4">Introducci&oacute;n</h2><p>En esta practica se mostrar&aacute; como un programa resuelve sistemas diferenciales de orden n mediante la transformada de Laplace y Fourier, el programa despliega la funci&oacute;n de trasnferencia, la respuesta al impulso, la respuesta a entrada cero, la respuesta a estado cero, la respuesta total con condiciones iniciales y las gr&aacute;ficas correspondientes</p><h2 id="5">FUNCION</h2><p><img src="Completo_eq14200335277605423837.png" alt="$$ y^2+3y^1+2y =x^1+3x $$"></p><p>condiciones iniciales</p><p><img src="Completo_eq08928032151095971048.png" alt="$$ y^2 (0)=0 $$&#xA; $$  y^1 (0)=2 $$&#xA; $$  y (0)=1  $$&#xA; $$ x (0)= cos(t)u(t)  $$"></p><h2 id="6">PUNTO 1</h2><p>Muestra la funci&oacute;n de transferencia del sistema</p><p><img src="Completo_eq00611186458609383539.png" alt="$$(S+3)/(S^2+3S+2) $$"></p><pre class="codeinput">n=[1 3];
-d=[1 3 2];
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 6: Sistemas diferenciales</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Integrantes</a></li><li><a href="#2">Objetivos:</a></li><li><a href="#4">Introducci&oacute;n</a></li><li><a href="#5">FUNCION</a></li><li><a href="#6">PUNTO 1</a></li><li><a href="#7">PUNTO 2</a></li><li><a href="#8">PUNTO 3</a></li><li><a href="#9">PUNTO  4</a></li><li><a href="#10">PUNTO  5</a></li><li><a href="#11">PUNTO 6</a></li><li><a href="#12">PUNTO 7</a></li></ul></div><h2 id="1">Integrantes</h2><p>Flores Lima Jos&eacute; Ricardo</p><p>Medina Bautista Sergio Cristian</p><p>Plata Montejano Lissete</p><h2 id="2">Objetivos:</h2><div><ul><li>Conocer comandos para obtener las funciones de respuesta de un sistema</li><li>Graficar las expresiones de respuesta</li></ul></div><h2 id="4">Introducci&oacute;n</h2><p>En esta practica se mostrar&aacute; como un programa resuelve sistemas diferenciales de orden n mediante la transformada de Laplace y Fourier, el programa despliega la funci&oacute;n de trasnferencia, la respuesta al impulso, la respuesta a entrada cero, la respuesta a estado cero, la respuesta total con condiciones iniciales y las gr&aacute;ficas correspondientes</p><h2 id="5">FUNCION</h2><p><img src="Completo_eq02526248155579076308.png" alt="$$ y^2+2y^1+2y =x^1+2x $$"></p><p>Condiciones Iniciales</p><p><img src="Completo_eq14546552306970557864.png" alt="$$ \\ y^1(0^-)=0 \\ $$"></p><p><img src="Completo_eq10449004754780597264.png" alt="$$   \\y(0^-)=1 \\  $$"></p><p><img src="Completo_eq13023152190138313456.png" alt="$$ \\ x(t)=exp(-t) $$"></p><p><img src="Completo_eq14565907091524056325.png" alt="$$  \\ x^1(0)=0\\ $$"></p><h2 id="6">PUNTO 1</h2><p>Muestra la funci&oacute;n de transferencia del sistema</p><p><img src="Completo_eq08909491473271892386.png" alt="$$ \frac{S+2}{S^2+2S+2} $$"></p><pre class="codeinput">n=[1 2];
+d=[1 2 2];
 G=tf(n,d)
 pole(G);
 step(G);
@@ -75,75 +75,84 @@ step(G);
 </pre><pre class="codeoutput">
 G =
  
-      s + 3
+      s + 2
   -------------
-  s^2 + 3 s + 2
+  s^2 + 2 s + 2
  
 Continuous-time transfer function.
 
 </pre><img vspace="5" hspace="5" src="Completo_01.png" alt=""> <h2 id="7">PUNTO 2</h2><p>Se muestra la respuesta al impulso del sistema</p><pre class="codeinput">syms <span class="string">t</span>
-transFourierImpulse([2 3 1],[3 1],dirac(t),10)
+transFourierImpulse([2 2 1],[2 1],dirac(t),10)
 </pre><pre class="codeoutput"> 
 APLICAMOS TRANSFORMADA DE FOURIER
  
           2
-2 Y(w) - w  Y(w) + w Y(w) 3i
+2 Y(w) - w  Y(w) + w Y(w) 2i
 
 =
-3 X(w) + w X(w) 1i
+2 X(w) + w X(w) 1i
 
  
 SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA
  
           2
-2 Y(w) - w  Y(w) + w Y(w) 3i
+2 Y(w) - w  Y(w) + w Y(w) 2i
 
 =
-3 + w 1i
+2 + w 1i
 
  
 DESPEJAMOS Y(w)
  
 Y(w)=
-    3 + w 1i
+    2 + w 1i
 ---------------
    2
-- w  + w 3i + 2
+- w  + w 2i + 2
 
  
 DESARROLLAMOS LAS FRACCIONES PARCIALES DE Y(w)
  
 Y(w)=
-    3 + w 1i
+    2 + w 1i
 ---------------
    2
-- w  + w 3i + 2
+- w  + w 2i + 2
 
  
 Aplicamos transformada inversa, asi la soluci&oacute;n es
  
 y(t)=
-(2 pi exp(-t) (sign(t) + 1) - pi exp(-2 t) (sign(t) + 1)
+/                                   / 1   1  \
+| pi exp(t (- 1 - i)) (sign(t) + 1) | - + -i | + pi #1 (sign(t) + 1)
+\                                   \ 2   2  /
 
-   + 2 pi exp(-t) dirac(t) - pi exp(-2 t) dirac(t) 2)/(2 pi)
+   / 1   1  \                                                       \
+   | - - -i | + pi exp(t (- 1 - i)) dirac(t) 1i - pi #1 dirac(t) 1i |/(2 pi)
+   \ 2   2  /                                                       /
+
+where
+
+   #1 == exp(t (- 1 + 1i))
+
 
 </pre><img vspace="5" hspace="5" src="Completo_02.png" alt=""> <h2 id="8">PUNTO 3</h2><pre>Se muestra la respuesta a entrada cero del sistema</pre><pre class="codeinput">syms <span class="string">t</span>
-transLaplaceCero([2 3 1],[3 1],[1 2],[0],0*t,10)
+transLaplaceCero([2 2 1],[2 1],[1 0],[0],0*t,10)
 <span class="comment">%</span>
 </pre><pre class="codeoutput"> 
 APLICAMOS TRANSFORMADA DE LAPLACE y substituimos condiciones iniciales
  
                          2
-2 Y(s) - s + 3 s Y(s) + s  Y(s) - 5
+2 Y(s) - s + 2 s Y(s) + s  Y(s) - 2
 
 =
-3 X(s) + s X(s)
+2 X(s) + s X(s)
 
  
 SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA
  
                          2
-2 Y(s) - s + 3 s Y(s) + s  Y(s) - 5
+2 Y(s) - s + 2 s Y(s) + s  Y(s) - 2
 
 =
 0
@@ -152,158 +161,146 @@ SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA
 DESPEJAMOS Y(s)
  
 Y(s)=
-    s + 5
+    s + 2
 ------------
  2
-s  + 3 s + 2
+s  + 2 s + 2
 
  
 DESARROLLAMOS LAS FRACCIONES PARCIALES DE Y(s)
  
 Y(s)=
-  4       3
------ - -----
-s + 1   s + 2
+    s + 2
+------------
+ 2
+s  + 2 s + 2
 
  
 Aplicamos transformada inversa, asi la soluci&oacute;n es:
  
 y(t)=
-4 exp(-t) - exp(-2 t) 3
+exp(-t) (cos(t) + sin(t))
 
  
 Representa la respuesta de la entrada cero
  
 </pre><img vspace="5" hspace="5" src="Completo_03.png" alt=""> <h2 id="9">PUNTO  4</h2><pre>Se muestra la respuesta a estado cero del sistema</pre><pre class="codeinput">syms <span class="string">t</span>
-transLaplaceCeroState([2 3 1],[3 1],[0 0],[0],cos(t)*heaviside(t),10)
+transLaplaceCeroState([2 2 1],[2 1],[0 0],[0],exp(-t)*heaviside(t),10)
 <span class="comment">%</span>
 <span class="comment">%</span>
 </pre><pre class="codeoutput"> 
 APLICAMOS TRANSFORMADA DE LAPLACE y substituimos condiciones iniciales
  
                      2
-2 Y(s) + 3 s Y(s) + s  Y(s)
+2 Y(s) + 2 s Y(s) + s  Y(s)
 
 =
-3 X(s) + s X(s)
+2 X(s) + s X(s)
 
  
 SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA
  
                      2
-2 Y(s) + 3 s Y(s) + s  Y(s)
+2 Y(s) + 2 s Y(s) + s  Y(s)
 
 =
-            2
-  3 s      s
------- + ------
- 2        2
-s  + 1   s  + 1
+  s       2
+----- + -----
+s + 1   s + 1
 
  
 DESPEJAMOS Y(s)
  
 Y(s)=
-          2
-         s  + 3 s
---------------------------
- 4      3      2
-s  + 3 s  + 3 s  + 3 s + 2
+       s + 2
+-------------------
+ 3      2
+s  + 3 s  + 4 s + 2
 
  
 DESARROLLAMOS LAS FRACCIONES PARCIALES DE Y(s)
  
 Y(s)=
-3 s   4
---- + -
- 5    5     1         2
-------- - ----- + ---------
-  2       s + 1   5 (s + 2)
- s  + 1
+  1           s
+----- - ------------
+s + 1    2
+        s  + 2 s + 2
 
  
 Aplicamos transformada inversa, asi la soluci&oacute;n es:
  
 y(t)=
-exp(-2 t) 2             3 cos(t)   4 sin(t)
------------ - exp(-t) + -------- + --------
-     5                      5          5
+exp(-t) - exp(-t) (cos(t) - sin(t))
 
 </pre><img vspace="5" hspace="5" src="Completo_04.png" alt=""> <h2 id="10">PUNTO  5</h2><pre>Se muestra la respuesta total del sistema</pre><pre class="codeinput">syms <span class="string">t</span>
-transLaplaceCeroState([2 3 1],[3 1],[1 2],[0],cos(t)*heaviside(t),10)
+transLaplaceCeroState([2 2 1],[2 1],[1 0],[0],exp(-t)*heaviside(t),10)
 <span class="comment">%</span>
 <span class="comment">%</span>
 </pre><pre class="codeoutput"> 
 APLICAMOS TRANSFORMADA DE LAPLACE y substituimos condiciones iniciales
  
                          2
-2 Y(s) - s + 3 s Y(s) + s  Y(s) - 5
+2 Y(s) - s + 2 s Y(s) + s  Y(s) - 2
 
 =
-3 X(s) + s X(s)
+2 X(s) + s X(s)
 
  
 SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA
  
                          2
-2 Y(s) - s + 3 s Y(s) + s  Y(s) - 5
+2 Y(s) - s + 2 s Y(s) + s  Y(s) - 2
 
 =
-            2
-  3 s      s
------- + ------
- 2        2
-s  + 1   s  + 1
+  s       2
+----- + -----
+s + 1   s + 1
 
  
 DESPEJAMOS Y(s)
  
 Y(s)=
-     3      2
-    s  + 6 s  + 4 s + 5
---------------------------
- 4      3      2
-s  + 3 s  + 3 s  + 3 s + 2
+     2
+    s  + 4 s + 4
+-------------------
+ 3      2
+s  + 3 s  + 4 s + 2
 
  
 DESARROLLAMOS LAS FRACCIONES PARCIALES DE Y(s)
  
 Y(s)=
-3 s   4
---- + -
- 5    5     3         13
-------- + ----- - ---------
-  2       s + 1   5 (s + 2)
- s  + 1
+  1           2
+----- + ------------
+s + 1    2
+        s  + 2 s + 2
 
  
 Aplicamos transformada inversa, asi la soluci&oacute;n es:
  
 y(t)=
-            exp(-2 t) 13   3 cos(t)   4 sin(t)
-3 exp(-t) - ------------ + -------- + --------
-                  5            5          5
+exp(-t) + 2 exp(-t) sin(t)
 
-</pre><img vspace="5" hspace="5" src="Completo_05.png" alt=""> <h2 id="11">PUNTO 6</h2><p>Se muestra la respuesta total al escal&oacute;n unitario con condiciones iniciales cero</p><pre class="codeinput">transLaplaceCeroState([2 3 1],[3 1],[0 0],[0],heaviside(t),10)
+</pre><img vspace="5" hspace="5" src="Completo_05.png" alt=""> <h2 id="11">PUNTO 6</h2><p>Se muestra la respuesta total al escal&oacute;n unitario con condiciones iniciales cero</p><pre class="codeinput">transLaplaceCeroState([2 2 1],[2 1],[0 0],[0],heaviside(t),10)
 <span class="comment">%</span>
 <span class="comment">%</span>
 </pre><pre class="codeoutput"> 
 APLICAMOS TRANSFORMADA DE LAPLACE y substituimos condiciones iniciales
  
                      2
-2 Y(s) + 3 s Y(s) + s  Y(s)
+2 Y(s) + 2 s Y(s) + s  Y(s)
 
 =
-3 X(s) + s X(s)
+2 X(s) + s X(s)
 
  
 SUBSTITUIMOS LA TRANSFORMADA DE LA ENTRADA
  
                      2
-2 Y(s) + 3 s Y(s) + s  Y(s)
+2 Y(s) + 2 s Y(s) + s  Y(s)
 
 =
-3
+2
 - + 1
 s
 
@@ -311,66 +308,59 @@ s
 DESPEJAMOS Y(s)
  
 Y(s)=
-     s + 3
+     s + 2
 ---------------
  3      2
-s  + 3 s  + 2 s
+s  + 2 s  + 2 s
 
  
 DESARROLLAMOS LAS FRACCIONES PARCIALES DE Y(s)
  
 Y(s)=
-    1         2      3
---------- - ----- + ---
-2 (s + 2)   s + 1   2 s
+1       s + 1
+- - ------------
+s    2
+    s  + 2 s + 2
 
  
 Aplicamos transformada inversa, asi la soluci&oacute;n es:
  
 y(t)=
-exp(-2 t)               3
---------- - 2 exp(-t) + -
-    2                   2
+1 - exp(-t) cos(t)
 
-</pre><img vspace="5" hspace="5" src="Completo_06.png" alt=""> <h2 id="12">PUNTO 7</h2><p>Se muestra las respuestas simb&oacute;licas y gr&aacute;ficas en un subplot</p><pre class="codeinput">sistemas( [2 3 1],[3 1],[1 2],[0],cos(t)*heaviside(t),10 )
+</pre><img vspace="5" hspace="5" src="Completo_06.png" alt=""> <h2 id="12">PUNTO 7</h2><p>Se muestra las respuestas simb&oacute;licas y gr&aacute;ficas en un subplot</p><pre class="codeinput">sistemas( [2 2 1],[2 1],[1 0],[0],exp(-t)*heaviside(t),10 )
 </pre><pre class="codeoutput"> 
 Funci&oacute;n de transferencia del sistema
  
-    s + 3
+    s + 2
 ------------
  2
-s  + 3 s + 2
+s  + 2 s + 2
 
  
 Respuesta al impulso del sistema
  
-2 exp(-t) - exp(-2 t)
+exp(-t) (cos(t) + sin(t))
 
  
 Respuesta a entrada cero del sistema
  
-4 exp(-t) - exp(-2 t) 3
+exp(-t) (cos(t) + sin(t))
 
  
 Respuesta a estado cero del sistema
  
-exp(-2 t) 2             3 cos(t)   4 sin(t)
------------ - exp(-t) + -------- + --------
-     5                      5          5
+exp(-t) - exp(-t) (cos(t) - sin(t))
 
  
 Respuesta total del sistema
  
-            exp(-2 t) 13   3 cos(t)   4 sin(t)
-3 exp(-t) - ------------ + -------- + --------
-                  5            5          5
+exp(-t) - exp(-t) (cos(t) - sin(t)) + exp(-t) (cos(t) + sin(t))
 
  
 Respuesta al escal&oacute;n unitario del sistema
  
-exp(-2 t)               3
---------- - 2 exp(-t) + -
-    2                   2
+1 - exp(-t) cos(t)
 
 </pre><img vspace="5" hspace="5" src="Completo_07.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -395,24 +385,28 @@ exp(-2 t)               3
 % total con condiciones iniciales y las gráficas correspondientes
 
 %% FUNCION 
-% $$ y^2+3y^1+2y =x^1+3x $$
+% $$ y^2+2y^1+2y =x^1+2x $$
 %
-% condiciones iniciales 
+% Condiciones Iniciales 
+% 
+% $$ \\ y^1(0^-)=0 \\ $$
 %
+% $$   \\y(0^-)=1 \\  $$
 %
-% $$ y^2 (0)=0 $$
-%  $$  y^1 (0)=2 $$
-%  $$  y (0)=1  $$
-%  $$ x (0)= cos(t)u(t)  $$
+% $$ \\ x(t)=exp(-t) $$
+%
+% $$  \\ x^1(0)=0\\ $$
+% 
+%
 
 %% PUNTO 1 
 %
 % Muestra la función de transferencia del sistema
 %
 %
-% $$(S+3)/(S^2+3S+2) $$
-n=[1 3];
-d=[1 3 2];
+% $$ \frac{S+2}{S^2+2S+2} $$
+n=[1 2];
+d=[1 2 2];
 G=tf(n,d)
 pole(G);
 step(G);
@@ -423,7 +417,7 @@ step(G);
 %
 %
 syms t
-transFourierImpulse([2 3 1],[3 1],dirac(t),10)
+transFourierImpulse([2 2 1],[2 1],dirac(t),10)
 
 %% PUNTO 3 
 %
@@ -432,7 +426,7 @@ transFourierImpulse([2 3 1],[3 1],dirac(t),10)
 %
 %
 syms t
-transLaplaceCero([2 3 1],[3 1],[1 2],[0],0*t,10)
+transLaplaceCero([2 2 1],[2 1],[1 0],[0],0*t,10)
 %
 
 
@@ -443,7 +437,7 @@ transLaplaceCero([2 3 1],[3 1],[1 2],[0],0*t,10)
 %
 %
 syms t
-transLaplaceCeroState([2 3 1],[3 1],[0 0],[0],cos(t)*heaviside(t),10)
+transLaplaceCeroState([2 2 1],[2 1],[0 0],[0],exp(-t)*heaviside(t),10)
 %
 %
 
@@ -454,7 +448,7 @@ transLaplaceCeroState([2 3 1],[3 1],[0 0],[0],cos(t)*heaviside(t),10)
 %
 %
 syms t
-transLaplaceCeroState([2 3 1],[3 1],[1 2],[0],cos(t)*heaviside(t),10)
+transLaplaceCeroState([2 2 1],[2 1],[1 0],[0],exp(-t)*heaviside(t),10)
 % 
 %
 
@@ -463,7 +457,7 @@ transLaplaceCeroState([2 3 1],[3 1],[1 2],[0],cos(t)*heaviside(t),10)
 % Se muestra la respuesta total al escalón unitario con condiciones iniciales
 % cero
 %
-transLaplaceCeroState([2 3 1],[3 1],[0 0],[0],heaviside(t),10)
+transLaplaceCeroState([2 2 1],[2 1],[0 0],[0],heaviside(t),10)
 %
 %
 
@@ -471,7 +465,7 @@ transLaplaceCeroState([2 3 1],[3 1],[0 0],[0],heaviside(t),10)
 %
 % Se muestra las respuestas simbólicas y gráficas en un subplot
 %
-sistemas( [2 3 1],[3 1],[1 2],[0],cos(t)*heaviside(t),10 )
+sistemas( [2 2 1],[2 1],[1 0],[0],exp(-t)*heaviside(t),10 )
 
 
 
