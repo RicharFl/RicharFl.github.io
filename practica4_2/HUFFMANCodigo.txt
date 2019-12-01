@@ -1,0 +1,986 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+#include <math.h>
+
+typedef struct Hoja_{
+  char caracter;
+  int frecuencia;
+  struct Hoja_ *apIzquierda;
+  struct Hoja_ *apDerecha;
+}Arbol;
+
+
+typedef struct Nodo_{
+  char caracter;
+  int frecuencia;
+  char codificacion[8];
+  struct Nodo_ *apSiguiente;
+  struct Nodo_ *apAnterior;
+  struct Hoja_ *apArbol;
+}Lista;
+
+//Alta
+Lista* CrearNodo(char dato, int frecuencia,Arbol* apArbol);
+Lista* AltaInicio(Lista* Inicio, char dato, int frecuencia,Arbol* apArbol);
+Lista* AltaPos(Lista* Inicio, int pos, int frecuencia, char dato,Arbol* apArbol);
+Lista* AltaFinal(Lista* Inicio, char dato, int frecuencia,Arbol* apArbol);
+
+//Baja
+Lista* BajaInicio(Lista* Inicio);
+Lista* BajaPos();
+Lista* BajaFinal(Lista* Inicio);
+
+//MODIFICAR
+//MOSTRAR
+void Mostrar(Lista* Inicio);
+//TAMANIO
+int Tamanio(Lista* Inicio);
+
+//CODIFICACION HUFFMAN
+Lista* GenerarListFrec(char *frase);//Generar nuestra lista con frecuen de letras que aparecen en el mensaje
+Lista *Ordenacion(Lista *Inicio);//Ordena la Lista de Frecuencias por Seleccion Directa
+void GeneraArbol(Lista *Inicio, Lista *InicioOriginal, Arbol **Raiz);//Genera el Arbol Binario a partir de la Lista de Frecuencia
+Arbol* CreaHoja(char caracter, int frecuencia);//Crea en memoria dinamica una estructura arbol,
+void MostrarArbolPreOrden(Arbol *Raiz);//Imprime el arbol Binari en PreOrden
+void GeneraListaArbolPreOrden(Arbol *Raiz, Lista **Inicio);//Generamos una lista pero que con la impresion PreOrden
+void CrearArchivodeArbol(Arbol *Raiz,Lista *Inicio);//Crea el Archivo ArbolPreOrden.txt
+void ConseguirCodificacion(Arbol *Raiz,char codicarac[],Lista **Inicio, int i);//A partir del Arbol en PreOrden va a Generar el codigo binario de cada letra del mensaje
+void MostrarCodigos(Lista *Inicio);//Mostrar la Lista pero imprimira las codigos binarios
+void ConseguirCodigoBinario(Lista *Codigos,char oracion[],char codificacionb[], char codificacionC[]);//Crea el mensaje codificado de HUFFMAN
+void CrearArchivodeCodigo(char codificacionC[]);//Crea el archivo Codificado.txt
+
+
+//DECODIFICACION DE HUFFMAN
+Lista* ConseguirArbolPreOrden();//Leer el archivo ArbolPreOrden.txt
+Arbol* AltaArbol(Lista **Inicio, Arbol* arbol);
+Arbol* GeneraArbolPreOrden(Arbol *Raiz, Lista **Inicio); //Construyen el Arbol PreOrden a partir de la Lista obtenia del txt
+void LeerArchivoCodificado(char frase[]);//Leer el archivo Codificado.txt
+void ConseguirBinarioLeido(unsigned char codificado[],unsigned char codificadoBin[]);//Conseguimos Binario a partir del codificado
+void ConseguirMensaje(char codificadoLeidoB[],Lista *CodigosConstruidos,char mensaje[]);//Consigue el Mensaje codificado por Huffman
+
+int main(){
+  char frase[200];
+  char codicarac[8];
+  char codificacionC[500];
+  char codificacionb[500];
+  char mensaje[500];
+  unsigned char codificadoLeido[500];
+  unsigned char codificadoLeidoB[500];
+  int opc = 0;
+  int i = 0;
+  Lista* Inicio;
+  Lista* ArbolPreOrden;
+  Lista* Codigos;
+  Lista* CodigosConstruidos;
+  Lista* ArbolLeido;
+  Arbol* ArbolConstruido;
+  Arbol* auxArbol;
+  Lista* ArbolLeido2;
+  Codigos=NULL;
+  CodigosConstruidos=NULL;
+  Inicio = NULL;
+  ArbolPreOrden=NULL;
+  ArbolLeido=NULL;
+  Arbol* Arbol;
+  Arbol=NULL;
+  ArbolConstruido = NULL;
+  auxArbol=NULL;
+  ArbolLeido2=NULL;
+
+  do {
+    printf("\tCODIFICACION DE HUFFMAN\n\n");
+    printf("Elija una opcion:\n");
+    printf("1.-Codificar.\n");
+    printf("2.-Mostrar Codificacion.\n");
+    printf("3.-Decodificar.\n");
+    printf("4.-Mostrar Decodificado.\n");
+    printf("5.- Salir.\n");
+    scanf("%d",&opc);
+    fflush(stdin);
+
+    switch (opc) {
+      case 1:
+        printf("Escriba la frase a codificar:");
+        gets(frase);
+        fflush(stdin);
+        while(frase[i] != '\0'){
+          if(frase[i] == ' '){
+            frase[i]='_';
+          }
+          else{
+            frase[i] = toupper(frase[i]);
+          }
+          i++;
+        }
+        printf("\nLa frase es: %s\n",frase);
+        system("PAUSE");
+        Inicio = GenerarListFrec(frase);
+        Inicio = Ordenacion(Inicio);
+        Mostrar(Inicio);
+        system("PAUSE");
+        GeneraArbol(Inicio,Inicio,&Arbol);
+        MostrarArbolPreOrden(Arbol);
+        system("PAUSE");
+        printf("SE GENERARA EL ARCHIVO DEL ARBOL EN PREORDEN\n\n");
+        CrearArchivodeArbol(Arbol,ArbolPreOrden);
+        printf("Se conseguira el codigo de cada letra.\n");
+        ConseguirCodificacion(Arbol,codicarac,&Codigos,0);
+        MostrarCodigos(Codigos);
+        system("PAUSE");
+        ConseguirCodigoBinario(Codigos,frase,codificacionb,codificacionC);
+        printf("%s",codificacionC);
+        system("PAUSE");
+        CrearArchivodeCodigo(codificacionC);
+
+      break;
+      case 2:
+      printf("Codificado de Huffman:\n\n");
+      printf("%s",codificacionC);
+      break;
+      case 3:
+        printf("Iniciando Lectura de ArbolPreOrden.txt\n");
+        ArbolLeido = ConseguirArbolPreOrden();
+        //Mostrar(ArbolLeido);
+        ArbolLeido2=ArbolLeido;
+        ArbolConstruido = AltaArbol(&ArbolLeido2,ArbolConstruido);
+        printf("\n\n\tArbolConstruido\n\n");
+        MostrarArbolPreOrden(ArbolConstruido);
+        system("PAUSE");
+        ConseguirCodificacion(ArbolConstruido,codicarac,&CodigosConstruidos,0);
+        MostrarCodigos(CodigosConstruidos);
+        system("PAUSE");
+        LeerArchivoCodificado(codificadoLeido);
+        ConseguirBinarioLeido(codificadoLeido,codificadoLeidoB);
+        ConseguirMensaje(codificadoLeidoB,CodigosConstruidos,mensaje);
+        system("PAUSE");
+        printf("\nEl mensaje codificado es:\n\n\t%s\n\n\n",mensaje);
+        system("PAUSE");
+      break;
+      case 4:
+        printf("\nEl mensaje codificado es:\n\n\t%s\n\n\n",mensaje);
+        system("PAUSE");
+      break;
+      case 5:
+        printf("Saliendo...\n");
+      break;
+    }
+  } while(opc != 5);
+  return 0;
+}
+
+//ALTAS
+Lista* CrearNodo(char dato, int frecuencia,Arbol* apArbol){
+  Lista *NuevoNodo;
+  NuevoNodo= (Lista*)malloc(sizeof(Lista));
+  NuevoNodo->caracter = dato;
+  NuevoNodo->frecuencia = frecuencia;
+  NuevoNodo->apSiguiente=NULL;
+  NuevoNodo->apAnterior=NULL;
+  NuevoNodo->apArbol = apArbol;
+};
+
+Lista* AltaInicio(Lista* Inicio, char dato, int frecuencia,Arbol* apArbol){
+  Lista* Nuevo;
+  Nuevo = CrearNodo(dato, frecuencia,apArbol);
+  if(Inicio == NULL){
+    Inicio = Nuevo;
+  }
+  else{
+    Nuevo->apSiguiente = Inicio;
+    Inicio->apAnterior = Nuevo;
+    Inicio = Nuevo;
+  }
+  return Inicio;
+}
+Lista* AltaPos(Lista* Inicio, int pos, int frecuencia, char dato,Arbol* apArbol){
+    Lista* Nuevo;
+    Lista* apRecorre;
+    Nuevo = NULL;
+    apRecorre = NULL;
+    int tamanio=0;
+    int i=1;
+
+    tamanio = Tamanio(Inicio);
+    if(Inicio != NULL){
+      if(pos > tamanio+1){
+        printf("%d\n",pos);
+        printf("Posicion Invalidad...\n");
+      }
+      else if(pos == 1){
+        Inicio = AltaInicio(Inicio, dato,frecuencia,apArbol);
+      }
+      else if(pos == tamanio+2){
+        Inicio = AltaFinal(Inicio,dato,frecuencia,apArbol);
+      }
+      else{
+        Nuevo = CrearNodo(dato,frecuencia,apArbol);
+        apRecorre = Inicio;
+        while(i != pos){
+          i++;
+          apRecorre = apRecorre->apSiguiente;
+          //printf("%d  ",i);
+        }
+        Nuevo->apAnterior = apRecorre->apAnterior;
+        Nuevo->apSiguiente = apRecorre;
+        apRecorre->apAnterior->apSiguiente = Nuevo;
+        apRecorre->apAnterior = Nuevo;
+      }
+    }
+    return Inicio;
+}
+Lista* AltaFinal(Lista* Inicio, char dato, int frecuencia,Arbol* apArbol){
+  Lista* Nuevo;
+  Lista* apRecorre;
+  apRecorre=NULL;
+
+  Nuevo = CrearNodo(dato,frecuencia,apArbol);
+
+  if(Inicio == NULL){
+    Inicio = Nuevo;
+  }
+  else{
+    apRecorre = Inicio;
+    while (apRecorre->apSiguiente != NULL) {
+      apRecorre = apRecorre->apSiguiente;
+    }
+    apRecorre->apSiguiente = Nuevo;
+    Nuevo->apAnterior = apRecorre;
+  }
+  return Inicio;
+}
+//BAJAS
+Lista* BajaInicio(Lista* Inicio){
+  Lista* aBorrar;
+  aBorrar= NULL;
+  if(Inicio !=NULL){
+    aBorrar=Inicio;
+    Inicio = Inicio->apSiguiente;
+    Inicio->apAnterior = NULL;
+    free(aBorrar);
+  }
+  else{
+    printf("Lista Vacia...\n");
+  }
+  return Inicio;
+}
+Lista* BajaPos(Lista* Inicio, int pos){
+  Lista *apRecorre;
+  Lista *aBorrar;
+  aBorrar = NULL;
+  apRecorre = NULL;
+  int tamanio=0;
+  int i=1;
+  tamanio = Tamanio(Inicio);
+  if(Inicio != NULL){
+    if(pos > tamanio){
+      printf("Posicion Invalidad...\n");
+    }
+    else if(pos == 1){
+
+      Inicio = BajaInicio(Inicio);
+
+    }
+    else if(pos == tamanio){
+
+      Inicio = BajaFinal(Inicio);
+    }
+    else{
+      apRecorre = Inicio;
+      while(i != pos){
+          i++;
+          apRecorre = apRecorre->apSiguiente;
+      }
+      aBorrar = apRecorre;
+      apRecorre->apSiguiente->apAnterior = apRecorre->apAnterior;
+      apRecorre->apAnterior->apSiguiente = apRecorre->apSiguiente;
+      free(aBorrar);
+    }
+  }
+  else{
+    printf("Lista Vacia...\n");
+  }
+  return Inicio;
+}
+Lista* BajaFinal(Lista* Inicio){
+  Lista* aBorrar;
+  Lista* apRecorre;
+  int i=1;
+  aBorrar= NULL;
+  apRecorre = NULL;
+  if(Inicio !=NULL){
+    apRecorre = Inicio;
+    while (apRecorre->apSiguiente!=NULL) {
+      i++;
+      apRecorre = apRecorre->apSiguiente;
+    }
+    aBorrar = apRecorre;
+    apRecorre = aBorrar->apAnterior;
+    apRecorre->apSiguiente = NULL;
+
+    free(aBorrar);
+  }
+
+  return Inicio;
+}
+//MODIFICAR
+//MOSTRAR
+void Mostrar(Lista*Inicio){
+  int count=0;
+  if(Inicio == NULL){
+    printf("Lista Vacia...\n");
+  }
+  else{
+    printf("Caracter:\tFrecuencia:\n\n");
+    while(Inicio != NULL){
+      printf("%c\t%d\n",Inicio->caracter,Inicio->frecuencia);
+      count++;
+      Inicio = Inicio->apSiguiente;
+    }
+  }
+}
+//TAMANIO
+int Tamanio(Lista* Inicio){
+  int count = 0;
+  if(Inicio == NULL){
+    printf("Lista Vacia...\n");
+  }
+  else{
+    while(Inicio->apSiguiente != NULL){
+      count++;
+      Inicio = Inicio->apSiguiente;
+    }
+  }
+
+  return count;
+}
+
+Lista* GenerarListFrec(char *frase){
+  Lista *ListaGenerada;
+  Lista *apRecorre;
+  ListaGenerada = NULL;
+  apRecorre = NULL;
+  int i=0;
+  int banderin = 0;
+
+  printf("\n%s\n",frase);
+
+  while (frase[i] != '\0') {
+    if(ListaGenerada == NULL){
+      ListaGenerada = AltaInicio(ListaGenerada,frase[i],1,NULL);
+
+    }
+    else{
+
+      apRecorre = ListaGenerada;
+      if(apRecorre->caracter == frase[i]){
+        apRecorre->frecuencia ++;
+        banderin = 1;
+      }
+      while(apRecorre->apSiguiente != NULL && banderin == 0){
+        if(apRecorre->caracter == frase[i]){
+          apRecorre->frecuencia ++;
+          banderin = 1;
+        }
+        else{
+          apRecorre = apRecorre->apSiguiente;
+          banderin = 0;
+        }
+        if(apRecorre->caracter == frase[i]){
+          apRecorre->frecuencia ++;
+          banderin = 1;
+        }
+
+      }
+      if(banderin == 0){
+        ListaGenerada = AltaFinal(ListaGenerada,frase[i],1,NULL);
+
+      }
+      banderin = 0;
+    }
+    i++;
+  }
+  Mostrar(ListaGenerada);
+  system("PAUSE");
+  return ListaGenerada;
+}
+
+Lista *Ordenacion(Lista *Inicio){
+
+ Lista *aux1;
+ Lista *aux2;
+ Lista *aux3;
+ aux1 = Inicio;
+ aux2 = Inicio;
+ aux3 = Inicio;
+ Lista *K;
+ K=CrearNodo('K',1,NULL);
+
+ aux2=Inicio->apSiguiente;
+ while(aux2!=NULL)
+ {
+     K->caracter=aux2->caracter;
+     K->frecuencia=aux2->frecuencia;
+
+     aux1=aux2->apAnterior;
+     while(aux1!=NULL&&K->frecuencia<aux1->frecuencia)
+     {
+         aux3=aux1->apSiguiente;
+         aux3->frecuencia=aux1->frecuencia;
+         aux3->caracter=aux1->caracter;
+
+         aux1->caracter=K->caracter;
+         aux1->frecuencia=K->frecuencia;
+
+         aux1=aux1->apAnterior;
+     }
+     aux2=aux2->apSiguiente;
+ }
+
+  return Inicio;
+}
+
+void GeneraArbol(Lista *Inicio, Lista *InicioOriginal, Arbol **Raiz){
+  Arbol *aphijoIzquierdo;
+  Arbol *aphijoDerecho;
+  Arbol *apPadre;
+
+  int auxfrecuencia = 0;
+  char caracterImpro = '<';
+  int tamanio=0;
+
+  Lista *apRecorre;
+  apRecorre=InicioOriginal;
+
+  int i=1;
+  int selector = 0;
+
+
+  if (Inicio == NULL) {
+    //*Raiz = Inicio->apArbol;
+    printf("Lista Vacia GeneraArbol\n\n");
+    while(apRecorre->apSiguiente != NULL){
+      apRecorre = apRecorre->apSiguiente;
+    }
+    printf("Me encuentro aqui 1\n\n");
+    *Raiz = apRecorre->apArbol;
+  }
+
+  else{
+    if (Inicio == NULL) {
+      while(apRecorre->apSiguiente != NULL){
+        apRecorre = apRecorre->apSiguiente;
+      }
+      printf("Me encuentro aqui 2\n\n");
+      *Raiz = apRecorre->apArbol;
+    }
+    else{
+      if(Inicio->apArbol != NULL){
+        aphijoIzquierdo = Inicio->apArbol;
+      }
+      else{
+        aphijoIzquierdo = CreaHoja(Inicio->caracter, Inicio->frecuencia);
+      }
+
+      Inicio = Inicio->apSiguiente;
+
+      if(Inicio->apArbol != NULL){
+        aphijoDerecho = Inicio->apArbol;
+      }
+      else{
+        aphijoDerecho = CreaHoja(Inicio->caracter, Inicio->frecuencia);
+      }
+      Inicio = Inicio->apSiguiente;
+
+      auxfrecuencia = aphijoIzquierdo->frecuencia + aphijoDerecho->frecuencia;
+
+      apPadre = CreaHoja(caracterImpro,auxfrecuencia);
+      apPadre->apIzquierda = aphijoIzquierdo;
+      apPadre->apDerecha = aphijoDerecho;
+
+      while(apRecorre != NULL && selector == 0){
+        if((apPadre->frecuencia+1) <= apRecorre->frecuencia){
+          selector=1;
+        }
+        else{
+          i++;
+        }
+        apRecorre = apRecorre->apSiguiente;
+      }
+
+      tamanio=Tamanio(InicioOriginal) + 1;
+      printf("Tamanio: %d\n",tamanio);
+      printf("Posicion: %d\n",i);
+      if(tamanio >= i){
+        InicioOriginal = AltaPos(InicioOriginal, i, apPadre->frecuencia, apPadre->caracter,apPadre);
+      }
+      else{
+        InicioOriginal = AltaFinal(InicioOriginal, apPadre->caracter, apPadre->frecuencia,apPadre);
+      }
+
+      Mostrar(InicioOriginal);
+      system("PAUSE");
+      GeneraArbol(Inicio, InicioOriginal, &(*Raiz));
+    }
+  }
+}
+Arbol* CreaHoja(char caracter, int frecuencia){
+  Arbol* NuevaHoja;
+  NuevaHoja = (Arbol*)malloc(sizeof(Arbol));
+  NuevaHoja->caracter = caracter;
+  NuevaHoja->frecuencia = frecuencia;
+  NuevaHoja->apIzquierda = NULL,
+  NuevaHoja->apDerecha = NULL;
+}
+void MostrarArbolPreOrden(Arbol *Raiz) {
+  if (Raiz!=NULL)
+  {
+    printf("%c\t%d\n",Raiz->caracter, Raiz->frecuencia);
+    if(Raiz->apIzquierda!= NULL){
+      MostrarArbolPreOrden(Raiz->apIzquierda);
+    }
+    if (Raiz->apDerecha != NULL) {
+      MostrarArbolPreOrden(Raiz->apDerecha);
+    }
+  }
+}
+void GeneraListaArbolPreOrden(Arbol *Raiz, Lista **Inicio){
+
+  if (Raiz != NULL) {
+
+  *Inicio = AltaFinal(*Inicio, Raiz->caracter, Raiz->frecuencia, NULL);
+
+    if (Raiz->apIzquierda != NULL) {
+      GeneraListaArbolPreOrden(Raiz->apIzquierda,&*Inicio);
+    }
+    if (Raiz->apDerecha != NULL) {
+      GeneraListaArbolPreOrden(Raiz->apDerecha,&*Inicio);
+    }
+  }
+  else{
+    printf("Arbol vacio\n\n");
+  }
+}
+
+void CrearArchivodeArbol(Arbol *Raiz,Lista *Inicio){
+  FILE *Archivo;
+  Lista *aux;
+  aux=Inicio;
+
+  Archivo = fopen("ArbolPreOrden.txt","a");
+
+  if(Archivo == NULL){
+    printf("No se puede crear o abrir el archivo ArbolPreOrden.txt\n\n");
+  }
+  else{
+    GeneraListaArbolPreOrden(Raiz,&aux);
+    Mostrar(aux);
+    while (aux != NULL) {
+      if (aux->caracter == '<') {
+        fprintf(Archivo, "%c %d ",aux->caracter,aux->frecuencia);
+        printf("%c %d ",aux->caracter,aux->frecuencia);
+      }
+      else{
+        fprintf(Archivo, "%c %d ",aux->caracter,aux->frecuencia);
+        printf("%c %d ",aux->caracter,aux->frecuencia);
+      }
+      aux = aux->apSiguiente;
+    }
+    system("PAUSE");
+  }
+  fclose(Archivo);
+}
+
+void ConseguirCodificacion(Arbol *Raiz,char codicarac[],Lista **Inicio, int i){
+
+  Lista *apRecorre;
+  apRecorre=NULL;
+
+  if(Raiz != NULL){
+
+        if (Raiz->apIzquierda != NULL) {
+          codicarac[i]='0';
+          ConseguirCodificacion(Raiz->apIzquierda,codicarac,&*Inicio,i+1);
+        }
+
+        if (Raiz->apDerecha != NULL) {
+          codicarac[i]='1';
+          ConseguirCodificacion(Raiz->apDerecha,codicarac, &*Inicio,i+1);
+        }
+
+        if (Raiz->caracter != '<') {
+          codicarac[i]='\0';
+          *Inicio = AltaFinal(*Inicio,Raiz->caracter,0,NULL);
+          apRecorre=*Inicio;
+          while (apRecorre->apSiguiente != NULL) {
+            apRecorre = apRecorre->apSiguiente;
+          }
+          strcpy(apRecorre->codificacion,codicarac);
+
+        }
+  }
+  else{
+    printf("Arbol Vacio\n\n");
+  }
+}
+void MostrarCodigos(Lista *Inicio){
+  Lista *apRecorre;
+  apRecorre = Inicio;
+
+  if(Inicio != NULL){
+    printf("Caracter\tCodigo\n\n");
+    while (apRecorre != NULL) {
+      printf("%c\t%s\n", apRecorre->caracter, apRecorre->codificacion);
+      apRecorre = apRecorre->apSiguiente;
+    }
+  }
+  else{
+    printf("Lista Vacia...\n");
+  }
+}
+
+void ConseguirCodigoBinario(Lista *Codigos,char oracion[],char codificacionb[], char codificacionC[]){
+
+  int i=0;
+  int j=0;
+  int k=0;
+  int h=0;
+  int l=0;
+  int m=0;
+  int modulo=0;
+  int conversion=0;
+  char aux;
+  char auxconv;
+  int ponderacion[8]={128,64,32,16,8,4,2,1};
+  int cantidaddeCarac=0;
+  int cant=0;
+  int auxcant=0;
+  int caracteresDec[500];
+  Lista *apRecorre;
+  apRecorre=NULL;
+
+  while(oracion[i]!='\0'){
+    aux=toupper(oracion[i]);
+    apRecorre=Codigos;
+
+    while(apRecorre->caracter != aux){
+      apRecorre=apRecorre->apSiguiente;
+    }
+    j=0;
+    while (apRecorre->codificacion[j] !='\0') {
+      codificacionb[k] = apRecorre->codificacion[j];
+      j++;
+      k++;
+    }
+    i++;
+  }
+  codificacionb[k]='\0';
+  i=0;
+  printf("%d\n\n",strlen(oracion));
+  printf("%d\n\n",strlen(codificacionb));
+  while(codificacionb[i]!='\0'){
+    printf("%c",codificacionb[i]);
+    i++;
+  }
+  printf("\n\n");
+
+  modulo = strlen(codificacionb)%8;
+  cantidaddeCarac = strlen(codificacionb);
+  cant = strlen(codificacionb)/8;
+  k=0;
+  if(modulo != 0){
+    auxcant = (cantidaddeCarac) + ((8)-(cantidaddeCarac-(cant)*(8)));
+    caracteresDec[k]=0;
+    for(h=0;h<auxcant;h++){
+      if(l == 8){
+        l=0;
+        k++;
+        caracteresDec[k]=0;
+      }
+        if(h>cantidaddeCarac){
+          auxconv='0';
+        }
+        else{
+          auxconv = codificacionb[h];
+        }
+
+        if(auxconv == '1'){
+          conversion=1;
+        }
+        else if(auxconv == '0'){
+          conversion=0;
+        }
+        printf("%d .- %d\n",h+1,conversion);
+        caracteresDec[k] += ((conversion)*(ponderacion[l]));
+        l++;
+    }
+    caracteresDec[k+1]='\0';
+    l=0;
+    while(caracteresDec[l] != '\0'){
+      printf("%d ",caracteresDec[l]);
+      l++;
+    }
+    system("PAUSE");
+  }
+  else{
+    caracteresDec[k]=0;
+    for(h=0;h<cantidaddeCarac;h++){
+      if(l == 8){
+        l=0;
+        k++;
+        caracteresDec[k]=0;
+      }
+        auxconv = codificacionb[h];
+        if(auxconv == '1'){
+          conversion=1;
+        }
+        else if(auxconv == '0'){
+          conversion=0;
+        }
+        printf("%d .- %d\n",h+1,conversion);
+        caracteresDec[k] += ((conversion)*(ponderacion[l]));
+        l++;
+    }
+    caracteresDec[k+1]='\0';
+    l=0;
+    while(caracteresDec[l] != '\0'){
+      printf("%d ",caracteresDec[l]);
+      l++;
+    }
+    system("PAUSE");
+  }
+  k=0;
+  while (caracteresDec[k]!='\0') {
+    codificacionC[k]=caracteresDec[k];
+    k++;
+  }
+  codificacionC[l]='\0';
+
+}
+void CrearArchivodeCodigo(char codificacionC[]){
+  FILE *Archivo;
+  char aux;
+
+  Archivo = fopen("Codificado.txt","w+");
+
+  if(Archivo == NULL){
+    printf("No se puede crear o abrir archivo Codificacion.txt\n\n");
+  }
+  else{
+    fputs(codificacionC,Archivo);
+  }
+  fclose(Archivo);
+}
+Lista *ConseguirArbolPreOrden(){
+  FILE *Archivo;
+  Lista *ListadeArbolPreOrden;
+  ListadeArbolPreOrden = NULL;
+  char textodeArbol[500];
+  int i=0;
+  unsigned char caracaux='<';
+  char caracaux2='|';
+  char caracaux3='|';
+  int frecaux=0;
+
+  Archivo = fopen("ArbolPreOrden.txt", "r+");
+
+  if (Archivo == NULL) {
+    printf("No se puede crear o abrir archivo ArbolPreOrden.txt\n\n");
+  }
+  else{
+    fgets(textodeArbol,500,Archivo);
+    printf("\n%s",textodeArbol);
+    fflush(stdin);
+    system("PAUSE");
+    fclose(Archivo);
+    Archivo = fopen("ArbolPreOrden.txt", "r+");
+    while (!feof(Archivo)){
+      fscanf(Archivo,"%c %d ",&caracaux, &frecaux);
+    //  printf("%c %d ",caracaux,frecaux);
+      ListadeArbolPreOrden = AltaFinal(ListadeArbolPreOrden,caracaux,frecaux,NULL);
+      //system("PAUSE");
+    }
+    Mostrar(ListadeArbolPreOrden);
+    system("PAUSE");
+
+  }
+  fclose(Archivo);
+  return ListadeArbolPreOrden;
+}
+Arbol* AltaArbol(Lista **Inicio, Arbol* arbol){
+  Lista *aux;
+  aux = (*Inicio);
+  while (aux != NULL) {
+    arbol = GeneraArbolPreOrden(arbol,&aux);
+    aux = aux->apSiguiente;
+  }
+  return arbol;
+
+}
+
+Arbol* GeneraArbolPreOrden(Arbol *Raiz, Lista **Inicio){
+  Arbol *apRecorre;
+  Arbol *nuevaHoja;
+  apRecorre=NULL;
+  nuevaHoja=NULL;
+  nuevaHoja = CreaHoja((*Inicio)->caracter,(*Inicio)->frecuencia);
+  int sum = 0;
+  if(Raiz == NULL){
+    return nuevaHoja;
+  }
+  else{
+    apRecorre = Raiz;
+    while (apRecorre != NULL) {
+      if (apRecorre->apIzquierda == NULL && apRecorre->apDerecha == NULL) {
+        apRecorre->apIzquierda = nuevaHoja;
+        return Raiz;
+      }
+      if(apRecorre->apDerecha!= NULL){
+        apRecorre = apRecorre->apDerecha;
+      }
+      else{
+        sum = apRecorre->apIzquierda->frecuencia + nuevaHoja->frecuencia;
+        if(apRecorre->frecuencia == sum){
+          apRecorre->apDerecha = nuevaHoja;
+          return Raiz;
+        }
+        else{
+          apRecorre = apRecorre->apIzquierda;
+
+
+        }
+      }
+    }
+  }
+}
+void LeerArchivoCodificado(char frase[]){
+  FILE *Archivo;
+  Archivo = fopen("Codificado.txt","r");
+  if (Archivo == NULL) {
+    printf("Error al leer el Archivo\n");
+  } else {
+    fgets(frase,300,Archivo);
+    printf("Codigo:\n");
+    printf("%s\n\n",frase);
+  }
+  fclose(Archivo);
+}
+void ConseguirBinarioLeido(unsigned char codificado[],unsigned char codificadoBin[]){
+  int codificadoD[300];
+  int i = 0;
+  char codicarac[9];
+  int j=0;
+  int k=0;
+  int l=0;
+
+  while(codificado[i]!= '\0'){
+    codificadoD[i]=codificado[i];
+    i++;
+  }
+  codificadoD[i] = '\0';
+
+  i=0;
+  while (codificadoD[i]!='\0') {
+    printf("\n%d:\t",codificadoD[i]);
+    for ( k = 8; k > 0; k--) {
+      codicarac[k] = codificadoD[i] % 2;
+      codificadoD[i] = codificadoD[i]/2;
+      printf("%d ", codicarac[k]);
+    }
+    for (l = 1; l < 9; l++) {
+      if (codicarac[l] == 0) {
+        codificadoBin[j] = '0';
+      }
+      else{
+        codificadoBin[j] = '1';
+      }
+      j++;
+    }
+    i++;
+  }
+  codificadoBin[j]='\0';
+  printf("\n%s\n\n",codificadoBin);
+}
+void ConseguirMensaje(char codificadoLeidoB[],Lista *CodigosConstruidos,char mensaje[]){
+  int i=0;
+  int j=0;
+  int l=0;
+  int n=0;
+  int m=0;
+  int match=0;
+  int tamaniocod=1;
+  int terminado=0;
+  int previo=0;
+  int tamanioaux=0;
+  int tamaniocomp=0;
+  int append=0;
+  int pos=0;
+  char aux[200];
+  Lista *apRecorre;
+  apRecorre = CodigosConstruidos;
+
+
+  while (codificadoLeidoB[i] != '\0' && terminado != 1) {
+    j=0;
+    //printf("\nIteracion: %d\n\n",i);
+    if(terminado==0){
+      if (append==0) {
+        l=0;
+        aux[l]=codificadoLeidoB[i];
+      }
+      else {
+        aux[l]=codificadoLeidoB[i];
+      }
+      l++;
+      aux[l]='\0';
+      //printf("%s",aux);
+      tamanioaux = strlen(aux);
+      pos = 0;
+      apRecorre=CodigosConstruidos;
+      while (apRecorre!= NULL && match != 1) {
+
+        //printf("%d\n",tamanioaux);
+        tamaniocomp = strlen(apRecorre->codificacion);
+        //printf("%d\n",tamaniocomp);
+        if(tamanioaux == tamaniocomp ){
+          if(strcmp(aux,apRecorre->codificacion) == 0){
+            match++;
+          }
+        }
+        apRecorre = apRecorre->apSiguiente;
+        pos++;
+      }
+      n=1;
+      //printf("\nposicion: %d",pos);
+      //printf("\nmatchs: %d",match);
+      if(match==1){
+        apRecorre = CodigosConstruidos;
+        while (n != pos) {
+          apRecorre = apRecorre->apSiguiente;
+          n++;
+        }
+        mensaje[m] = apRecorre->caracter;
+        m++;
+        mensaje[m]='\0';
+        //printf("\t%s\n",mensaje);
+        append=0;
+        match=0;
+      }
+      else{
+        append=1;
+      }
+    }
+    else{
+      printf("Acabamos\n");
+    }
+    terminado=1;
+    while (codificadoLeidoB[j+i] != '\0') {
+      if(codificadoLeidoB[j+i] == '1'){
+        terminado=0;
+      }
+      j++;
+    }
+    i++;
+  }
+}
