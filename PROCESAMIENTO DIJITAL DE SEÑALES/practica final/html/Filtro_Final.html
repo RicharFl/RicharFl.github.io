@@ -1,0 +1,711 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>PROPAGACION DE ONDAS ELECTROMAGNETICAS</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-12-02"><meta name="DC.source" content="Filtro_Final.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>PROPAGACION DE ONDAS ELECTROMAGNETICAS</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Pr&aacute;ctica FINAL : Aplicaci&oacute;n de filtros FIR de fase lineal en Teor&iacute;a de las comunicaciones</a></li><li><a href="#2">Integrantes</a></li><li><a href="#3">Objetivos</a></li><li><a href="#4">Simular un sistema de modulacion y demodulacion DSB-SC (doble banda lateral con portadora suprimida)</a></li><li><a href="#5">Se&ntilde;ales moduladora  y portadora</a></li><li><a href="#6">A.-	Graficar las se&ntilde;ales anal&oacute;gicas c(t) y m(t) (Tiempo continuo)</a></li><li><a href="#7">B. Muestrear las se&ntilde;ales analogicas <img src="Filtro_Final_eq00958838575356274692.png" alt="$$ m(t) $$"> y <img src="Filtro_Final_eq13777652892855198088.png" alt="$$ c(t) $$"> utilizando <img src="Filtro_Final_eq04862471901607486165.png" alt="$$ f_s = 9000hz $$">  desde <img src="Filtro_Final_eq03952485162634518346.png" alt="$$ -100 \leq{}t\leq{100} $$"> para  m(n) y c(n)</a></li><li><a href="#8">C.	Graficar las se&ntilde;ales c(n) y m(t)  en tiempo discreto.</a></li><li><a href="#9">D. Calcular (num&eacute;ricamente) la transformada de Fourier de m(t) y  c(t) utilizando las muestras obtenidas m(n) y c(n)  y graficar los espectros de magnitud (espectros continuos). Mostrar en el eje horizontal las frecuencias reales de las se&ntilde;ales en Hz.</a></li><li><a href="#10">E. Obtener la se&ntilde;al modulada y(n) = m(n)*c(n) y graficar la se&ntilde;al en tiempo D.</a></li><li><a href="#11">F. Calcular (num&eacute;ricamente) la transformada de Fourier de y(t)  usando las muestras y(n) y graficar el espectro de magnitud. Mostrar en el eje horizontal las frecuencias reales de las se&ntilde;ales en Hz.</a></li><li><a href="#12">Demodulacion</a></li><li><a href="#13">G. Obtener la se&ntilde;al r(n) = y(n)c(n) y graficar en tiempo discreto</a></li><li><a href="#14">H.	Graficar el espectro de magnitud de r(n)</a></li><li><a href="#15">I.	Eliminar las bandas laterales de r(n)  mediante un filtro FIR sim&eacute;trico con M=100, obteniendo la se&ntilde;al  m2(n)</a></li><li><a href="#16">J.	Graficar  la se&ntilde;al m2  y su espectro de magnitud.</a></li><li><a href="#17">2.	Simular un sistema de modulaci&oacute;n y demodulaci&oacute;n SSB-SC (Banda lateral &uacute;nica con portadora suprimida).</a></li><li><a href="#18">b.	Utilizando un filtro FIR de fase lineal antisim&eacute;trico con M=101, eliminar las bandas laterales superiores para obtener la se&ntilde;al  <img src="Filtro_Final_eq14743033316211948199.png" alt="$$ y_{ssb} (n)$">$</a></li><li><a href="#19">c. Graficar la se&ntilde;al yssb(n) y su espectro de magnitud</a></li><li><a href="#20">Demodulacion de la se&ntilde;al SSB-SC</a></li><li><a href="#21">I y J. Elimninar las bandas laterales.</a></li><li><a href="#22">FUNCIONES UTILIZADAS</a></li></ul></div><h2 id="1">Pr&aacute;ctica FINAL : Aplicaci&oacute;n de filtros FIR de fase lineal en Teor&iacute;a de las comunicaciones</h2><h2 id="2">Integrantes</h2><p>Flores Lima Jos&eacute; Ricardo</p><h2 id="3">Objetivos</h2><div><ul><li>En este ejemplo se muestra c&oacute;mo dise&ntilde;ar, analizar y aplicar un filtro digital a los datos. Le ayudar&aacute; a responder preguntas como: &iquest;C&oacute;mo compenso el retraso introducido por un filtro?, &iquest;C&oacute;mo evito distorsionar mi se&ntilde;al?, &iquest;C&oacute;mo elimino el contenido no deseado de mi se&ntilde;al?, &iquest;c&oacute;mo puedo diferenciar mi se&ntilde;al?, y &iquest;c&oacute;mo integro mi se&ntilde;al? Los filtros se pueden utilizar para dar forma al espectro de la se&ntilde;al de la manera deseada o para realizar operaciones matem&aacute;ticas como la diferenciaci&oacute;n y la integraci&oacute;n. En lo que sigue aprender&aacute; algunos conceptos pr&aacute;cticos que facilitar&aacute;n el uso de filtros cuando los necesite. Este ejemplo se centra en las aplicaciones de filtros digitales en lugar de en su dise&ntilde;o. Si desea obtener m&aacute;s informaci&oacute;n sobre c&oacute;mo dise&ntilde;ar filtros digitales, consulte el ejemplo "introducci&oacute;n pr&aacute;ctica al dise&ntilde;o de filtro digital".</li></ul></div><h2 id="4">Simular un sistema de modulacion y demodulacion DSB-SC (doble banda lateral con portadora suprimida)</h2><h2 id="5">Se&ntilde;ales moduladora  y portadora</h2><p>m(t) ---&gt; es la se&ntilde;al moduladora.</p><p>c(t) ---&gt; Es la se&ntilde;al portadora.</p><p><img src="Filtro_Final_eq07208600217959418912.png" alt="$$m(t)= 5 cos(200 \pi t) + 2cos (400 \pi t )  +  cos(800 \pi t )$$"></p><p><img src="Filtro_Final_eq17054110828262986812.png" alt="$$c(t)=  cos(3600 \pi t) $$"></p><h2 id="6">A.-	Graficar las se&ntilde;ales anal&oacute;gicas c(t) y m(t) (Tiempo continuo)</h2><pre class="codeinput">t = -0.05:(1/9000):0.05;
+m = 5*cos(200*pi*t) + 2*cos(400*pi*t) + cos(800*pi*t); <span class="comment">% Mensaje</span>
+c = cos(3600*pi*t); <span class="comment">% Portadora</span>
+
+figure(1)
+subplot(2,1,1)
+plot(t,m)
+grid <span class="string">on</span>
+title(<span class="string">'Se&ntilde;al de Mensaje m(t)'</span>)
+subplot(2,1,2)
+plot(t,c)
+axis([-0.005,0.005,-1,1])
+grid <span class="string">on</span>
+title(<span class="string">'Se&ntilde;al de portadora c(t)'</span>)
+</pre><img vspace="5" hspace="5" src="Filtro_Final_01.png" alt=""> <h2 id="7">B. Muestrear las se&ntilde;ales analogicas <img src="Filtro_Final_eq00958838575356274692.png" alt="$$ m(t) $$"> y <img src="Filtro_Final_eq13777652892855198088.png" alt="$$ c(t) $$"> utilizando <img src="Filtro_Final_eq04862471901607486165.png" alt="$$ f_s = 9000hz $$">  desde <img src="Filtro_Final_eq03952485162634518346.png" alt="$$ -100 \leq{}t\leq{100} $$"> para  m(n) y c(n)</h2><pre class="codeinput">n = -100:100;
+fs = 9000;
+Ts = 1/fs;
+m_n = 5*cos(200*pi*n*Ts) + 2*cos(400*pi*n*Ts) + cos(800*pi*n*Ts); <span class="comment">% Mensaje</span>
+c_n = cos(3600*pi*n*Ts); <span class="comment">% Portadora</span>
+</pre><h2 id="8">C.	Graficar las se&ntilde;ales c(n) y m(t)  en tiempo discreto.</h2><pre class="codeinput">        figure(2)
+        subplot(211)
+            stem(n,m_n,<span class="string">'r'</span>)
+                title(<span class="string">'Se&ntilde;al m(n) en tiempo discreto '</span>)
+        subplot(212)
+            stem(n,c_n,<span class="string">'r'</span>)
+                title(<span class="string">'Se&ntilde;al c(n) en tiempo discreto'</span>)
+</pre><img vspace="5" hspace="5" src="Filtro_Final_02.png" alt=""> <h2 id="9">D. Calcular (num&eacute;ricamente) la transformada de Fourier de m(t) y  c(t) utilizando las muestras obtenidas m(n) y c(n)  y graficar los espectros de magnitud (espectros continuos). Mostrar en el eje horizontal las frecuencias reales de las se&ntilde;ales en Hz.</h2><pre class="codeinput">w = -pi:0.01:pi;
+M = 0;
+C = 0;
+
+<span class="keyword">for</span> nn = n
+    M = M + m(nn + 101)*exp(-1i*w*nn); <span class="comment">% Transformada de Fourier</span>
+<span class="keyword">end</span>
+
+    figure(3)
+
+    plot(w*4500/pi, abs(M), <span class="string">'m'</span>)
+            title(<span class="string">'Espectro de magnitud del mensaje m(t)'</span>)
+             ylabel (<span class="string">'n'</span>);
+             xlabel (<span class="string">'|M(n)|'</span>);
+<span class="comment">% Trasformada de Fourier con la Portadora c(t)</span>
+
+<span class="keyword">for</span> kk = n
+    C= C + c(kk + 101)*exp(-1i*w*kk); <span class="comment">% Transformada de Fourier</span>
+<span class="keyword">end</span>
+
+figure(4)
+        plot(w*4500/pi, abs(C),<span class="string">'g'</span>)    <span class="comment">%% Para ver las frecuencias reales de las se&ntilde;ales en Hz</span>
+            title(<span class="string">'Espectro de magnitud de la portadora c(t)'</span>)
+             ylabel (<span class="string">'n'</span>);
+             xlabel (<span class="string">'|C(n)|'</span>);
+</pre><img vspace="5" hspace="5" src="Filtro_Final_03.png" alt=""> <img vspace="5" hspace="5" src="Filtro_Final_04.png" alt=""> <h2 id="10">E. Obtener la se&ntilde;al modulada y(n) = m(n)*c(n) y graficar la se&ntilde;al en tiempo D.</h2><pre class="codeinput">y_n = m_n.*c_n; <span class="comment">% Se&ntilde;al modulada Tiempo Discreto</span>
+y_t = m.*c;    <span class="comment">% Se&ntilde;al modulada Tiempo Continuo</span>
+            figure(5)
+                subplot(2,1,1)
+                     stem(n,y_n,<span class="string">'r'</span>)
+                title(<span class="string">'Se&ntilde;al modulada y(n)'</span>)
+                 ylabel (<span class="string">'n'</span>);
+                     xlabel (<span class="string">'y(n)=m(n)*c(n)'</span>);
+                subplot(2,1,2)
+                     plot(t,y_t,<span class="string">'r'</span>)
+                    title(<span class="string">'Se&ntilde;al modulada y(t)'</span>)
+                    ylabel (<span class="string">'t'</span>);
+                    xlabel (<span class="string">'y(t)=m(t)*c(t)'</span>);
+</pre><img vspace="5" hspace="5" src="Filtro_Final_05.png" alt=""> <h2 id="11">F. Calcular (num&eacute;ricamente) la transformada de Fourier de y(t)  usando las muestras y(n) y graficar el espectro de magnitud. Mostrar en el eje horizontal las frecuencias reales de las se&ntilde;ales en Hz.</h2><pre class="codeinput">Y=0;
+
+<span class="keyword">for</span> oo = n
+    Y = Y + y_t(oo + 101)*exp(-1i*w*oo); <span class="comment">% Transformada de Fourier</span>
+<span class="keyword">end</span>
+
+    figure(6)
+                plot(w*4500/pi, abs(Y),<span class="string">'g'</span>)    <span class="comment">%% Para ver las frecuencias reales de las se&ntilde;ales en Hz</span>
+                        title(<span class="string">'Espectro de magnitud de la se&ntilde;al modulada y(w)'</span>)
+                                 ylabel (<span class="string">'n'</span>);
+                                 xlabel (<span class="string">'|Y(w)|'</span>);
+</pre><img vspace="5" hspace="5" src="Filtro_Final_06.png" alt=""> <h2 id="12">Demodulacion</h2><h2 id="13">G. Obtener la se&ntilde;al r(n) = y(n)c(n) y graficar en tiempo discreto</h2><pre class="codeinput">r_n = y_n.*c_n;
+
+            figure(7)
+              stem(n, r_n)
+                title(<span class="string">'Se&ntilde;al a la salida del receptor r(n)'</span>)
+                                 ylabel (<span class="string">'n'</span>);
+                                 xlabel (<span class="string">'r(n) = y(n)*c(n)'</span>);
+</pre><img vspace="5" hspace="5" src="Filtro_Final_07.png" alt=""> <h2 id="14">H.	Graficar el espectro de magnitud de r(n)</h2><pre class="codeinput"> R_N=0;
+
+<span class="keyword">for</span> rr = n
+    R_N = R_N + r_n(rr + 101)*exp(-1i*w*rr);
+<span class="keyword">end</span>
+
+        figure(8)
+            plot(w*4500/pi, abs(R_N),<span class="string">'r'</span>)
+                title(<span class="string">'Espectro de magnitud de la se&ntilde;al r(n)'</span>)
+                                 ylabel (<span class="string">'n'</span>);
+                                 xlabel (<span class="string">'R(W)'</span>);
+</pre><img vspace="5" hspace="5" src="Filtro_Final_08.png" alt=""> <h2 id="15">I.	Eliminar las bandas laterales de r(n)  mediante un filtro FIR sim&eacute;trico con M=100, obteniendo la se&ntilde;al  m2(n)</h2><pre class="codeinput">                M = 100;
+                 aux = zeros(1,38);
+                    Hr = [1 1 1 1 1 1 1 1 1 1 0.8 0.5 aux];
+                         A = ank(M);
+                             h = inv(A)*Hr';
+                                 Hw = 0;
+                                     w1=-pi:0.01:pi;
+
+<span class="keyword">for</span> n = 0:((M/2)-1)
+    Hw = Hw + 2*cos(((M-1)/2-n).*w1)*h(n+1);
+<span class="keyword">end</span>
+
+        figure(9)
+            plot(w1*2000/pi, 20*log10(abs(Hw)),<span class="string">'r'</span>);
+                title(<span class="string">'Respuesta en frecuencia del filtro'</span>)
+                    h = [h; flipud(h)];
+
+        figure(10)
+            stem(h,<span class="string">'m'</span>)
+                title(<span class="string">'Respuesta al impulso del filtro'</span>)
+</pre><img vspace="5" hspace="5" src="Filtro_Final_09.png" alt=""> <img vspace="5" hspace="5" src="Filtro_Final_10.png" alt=""> <h2 id="16">J.	Graficar  la se&ntilde;al m2  y su espectro de magnitud.</h2><pre class="codeinput">            m2n = R_N.*Hw;
+            m2 = conv(r_n,h);
+
+                            figure(11)
+                            subplot(2,1,1)
+                            plot(m_n,<span class="string">'r'</span>)
+                            title(<span class="string">'Se&ntilde;al Transmitida'</span>)
+                            subplot(2,1,2)
+                            plot(m2,<span class="string">'g'</span>)
+                            title(<span class="string">'Se&ntilde;al Recuperada = m(n)'</span>)
+
+                    figure(12)
+                    subplot(3,1,1)
+                    plot(w*4500/pi, abs(R_N),<span class="string">'m'</span>)
+                    title(<span class="string">'Espectro de magnitud de la se&ntilde;al modulada r(n)'</span>)
+
+                        subplot(3,1,2)
+                        plot(w1*2000/pi, 20*log10(abs(Hw)),<span class="string">'m'</span>);
+                        title(<span class="string">'Respuesta en frecuencia del filtro pasabajas'</span>)
+                        axis([-2000 2000 -80 20]);
+
+                    subplot(3,1,3)
+                    plot(w*4500/pi, abs(m2n),<span class="string">'m'</span>);
+                    title(<span class="string">'Espectro de la se&ntilde;al a la salida del filtro FIR (Se&ntilde;al recuperada)'</span>)
+</pre><img vspace="5" hspace="5" src="Filtro_Final_11.png" alt=""> <img vspace="5" hspace="5" src="Filtro_Final_12.png" alt=""> <h2 id="17">2.	Simular un sistema de modulaci&oacute;n y demodulaci&oacute;n SSB-SC (Banda lateral &uacute;nica con portadora suprimida).</h2><p>a.	Repetir los pasos (a)- (f) del problema (1).</p><h2 id="18">b.	Utilizando un filtro FIR de fase lineal antisim&eacute;trico con M=101, eliminar las bandas laterales superiores para obtener la se&ntilde;al  <img src="Filtro_Final_eq14743033316211948199.png" alt="$$ y_{ssb} (n)$">$</h2><pre class="codeinput">M1 = 101;
+B = bnk(M1);
+w2 = -pi:0.01:pi;
+
+Im_par=[zeros(1,7) .1 .5 .9 ones(1,8) .9 .5 .1 zeros(1,29)];
+
+h_impar = inv(B)*Im_par';
+h2 = [h_impar;0;-flipud(h_impar)];
+
+
+
+H_rim = 0;
+
+ <span class="keyword">for</span> j=0:(M1-1)/2
+     H_rim = H_rim + 2*sin(((M1-1)/2-j).*w2)*h2(j+1);
+ <span class="keyword">end</span>
+
+            figure(13)
+                hold <span class="string">on</span>
+                        plot(w2*2000/pi, 20*log10(abs(H_rim)),<span class="string">'r'</span>)
+                            title(<span class="string">'H(w) Antisimetrico Impar'</span>)
+                                   axis([-2000 2000 -90 10]);
+</pre><img vspace="5" hspace="5" src="Filtro_Final_13.png" alt=""> <h2 id="19">c. Graficar la se&ntilde;al yssb(n) y su espectro de magnitud</h2><pre class="codeinput">            yss_bn = conv(y_n,h2);
+             yss_bn = yss_bn(50:250);
+                 z = -100:100;
+
+    figure(14)
+        stem(z, yss_bn)
+            title(<span class="string">'Se&ntilde;al yssb(n)'</span>)
+
+yss_bw = H_rim.*Y;
+
+        figure(15)
+            subplot(2,1,1)
+                plot(w*4500/pi, abs(yss_bw))
+                    title(<span class="string">'Espectro de la se&ntilde;al SSB-SC yssb(n)'</span>)
+
+
+            subplot(2,1,2)
+                    plot(w*4500/pi, abs(Y))
+                        title(<span class="string">'Espectro de magnitud de la se&ntilde;al modulada y(t)'</span>)
+</pre><img vspace="5" hspace="5" src="Filtro_Final_14.png" alt=""> <img vspace="5" hspace="5" src="Filtro_Final_15.png" alt=""> <h2 id="20">Demodulacion de la se&ntilde;al SSB-SC</h2><pre class="codeinput"><span class="comment">% g. Obtener la se&ntilde;al r(n) = yssb(n)c(n) y graficar en tiempo discreto</span>
+
+        r2_n = yss_bn.*c_n;
+
+            figure(16)
+            stem(z,r2_n)
+            title(<span class="string">'Se&ntilde;al r(n) = y(n)c(n)'</span>)
+
+<span class="comment">% H. Espectro de R2n</span>
+
+        figure(17)
+        f=linspace(-fs/2,fs/2,1000);
+        R_2=fftshift(fft(r2_n,1000));
+
+            plot(f,abs(R_2),<span class="string">'g'</span>);
+                    title(<span class="string">'Rssb(w)'</span>)
+</pre><img vspace="5" hspace="5" src="Filtro_Final_16.png" alt=""> <img vspace="5" hspace="5" src="Filtro_Final_17.png" alt=""> <h2 id="21">I y J. Elimninar las bandas laterales.</h2><pre class="codeinput">            mensb = conv(r2_n,h);
+                m_rec = mensb(50:250);
+
+
+                figure(18)
+                    subplot(2,1,1)
+                        plot(m_n,<span class="string">'m'</span>)
+                    title(<span class="string">'Se&ntilde;al Transmitida'</span>)
+                        subplot(2,1,2)
+                            plot(m_rec,<span class="string">'m'</span>)
+                    title(<span class="string">'Se&ntilde;al Demodulada'</span>)
+
+            M2 = fftshift(fft(m_rec,1000));
+        f2 = linspace(-fs/2,fs/2,length(M2));
+
+        figure(19)
+        plot(f2, abs(M2),<span class="string">'r'</span>)
+        title(<span class="string">'Espectro de la se&ntilde;al recibida de (yssb(n))'</span>)
+</pre><img vspace="5" hspace="5" src="Filtro_Final_18.png" alt=""> <img vspace="5" hspace="5" src="Filtro_Final_19.png" alt=""> <h2 id="22">FUNCIONES UTILIZADAS</h2><pre class="codeinput"><span class="comment">% function [A]= ank(M)</span>
+<span class="comment">%par , M numero de muestras</span>
+
+<span class="comment">% if((-1).^M)==1</span>
+
+<span class="comment">% for k=0:(M/2-1)</span>
+  <span class="comment">%  w(k+1)=((2*pi)/M)*(k);                          %matlab no inicia en 0 (2*pi*k)/M ,, renglon --&gt;</span>
+
+  <span class="comment">%  for n=0:1:(M/2-1)</span>
+  <span class="comment">%      A(k+1,n+1)=2*cos(((M-1)./2-(n))*w(k+1));    %columna</span>
+ <span class="comment">%   end</span>
+
+<span class="comment">%end</span>
+<span class="comment">%end</span>
+
+<span class="comment">%Impar</span>
+<span class="comment">%  if((-1).^M)==-1</span>
+<span class="comment">%    for kk=0:((M-1)/2)</span>
+
+<span class="comment">%        w(kk+1)=((2*pi)/M)*(kk);</span>
+
+  <span class="comment">%      for nn=0:1:((M-1)/2)</span>
+ <span class="comment">%         if(nn==(M-1)/2)                           % si llega al ultimo valor, osea el limite</span>
+<span class="comment">%             A(kk+1,nn+1)=1;                        % habra un 1 en la ultima columna, para saber</span>
+
+<span class="comment">%Impar</span>
+<span class="comment">%        else</span>
+<span class="comment">%           A(kk+1,nn+1)=2.*cos(((M-1)./2-(nn)).*w(kk+1));</span>
+<span class="comment">%         end</span>
+<span class="comment">%        end</span>
+<span class="comment">%   end</span>
+<span class="comment">%end</span>
+<span class="comment">%A</span>
+<span class="comment">%end</span>
+
+<span class="comment">%--------------------------------------------------------------------------%</span>
+
+
+<span class="comment">% function [B]= bnk(M)</span>
+<span class="comment">%par</span>
+
+<span class="comment">% if((-1).^M)==1</span>
+
+ <span class="comment">%   for n=0:1:((M/2)-1)</span>
+  <span class="comment">%      w(n+1)=((2*pi)./M)*(n+1/2);</span>
+   <span class="comment">%     for k=0:1:((M/2)-1)</span>
+     <span class="comment">%       B(n+1,k+1)=2*sin(((M-1)./2-k)*w(n+1));</span>
+    <span class="comment">%    end</span>
+  <span class="comment">%  end</span>
+<span class="comment">% end</span>
+
+<span class="comment">%impar</span>
+<span class="comment">% if((-1).^M)==-1</span>
+
+ <span class="comment">%   for nn=0:1:(((M-1)./2)-1)% 5-1/2 -1 sera una matriz de 0 a 1 2x2</span>
+  <span class="comment">%      w(nn+1)=(((2*pi)./M)*(nn+1/2));</span>
+   <span class="comment">%     for kk=0:1:(((M-1)./2)-1)</span>
+    <span class="comment">%        B(nn+1,kk+1)=2*sin((((M-1)./2)-kk)*w(nn+1));</span>
+     <span class="comment">%   end</span>
+    <span class="comment">% end</span>
+<span class="comment">% end</span>
+
+
+<span class="comment">% end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% PROPAGACION DE ONDAS ELECTROMAGNETICAS 
+
+
+
+%% Práctica FINAL : Aplicación de filtros FIR de fase lineal en Teoría de las comunicaciones
+
+%% Integrantes
+%
+% Flores Lima José Ricardo
+%
+
+
+%% Objetivos
+% * En este ejemplo se muestra cómo diseñar, analizar y aplicar un filtro digital a los datos. Le ayudará a responder preguntas como: ¿Cómo compenso el retraso introducido por un filtro?, ¿Cómo evito distorsionar mi señal?, ¿Cómo elimino el contenido no deseado de mi señal?, ¿cómo puedo diferenciar mi señal?, y ¿cómo integro mi señal?
+% Los filtros se pueden utilizar para dar forma al espectro de la señal de la manera deseada o para realizar operaciones matemáticas como la diferenciación y la integración. En lo que sigue aprenderá algunos conceptos prácticos que facilitarán el uso de filtros cuando los necesite.
+% Este ejemplo se centra en las aplicaciones de filtros digitales en lugar de en su diseño. Si desea obtener más información sobre cómo diseñar filtros digitales, consulte el ejemplo "introducción práctica al diseño de filtro digital".
+
+%% Simular un sistema de modulacion y demodulacion DSB-SC (doble banda lateral con portadora suprimida)
+
+%% Señales moduladora  y portadora  
+% m(t) REPLACE_WITH_DASH_DASH-> es la señal moduladora. 
+%
+% c(t) REPLACE_WITH_DASH_DASH-> Es la señal portadora.
+% 
+% 
+% $$m(t)= 5 cos(200 \pi t) + 2cos (400 \pi t )  +  cos(800 \pi t )$$
+%
+% $$c(t)=  cos(3600 \pi t) $$
+
+%% A.-	Graficar las señales analógicas c(t) y m(t) (Tiempo continuo)
+t = -0.05:(1/9000):0.05;
+m = 5*cos(200*pi*t) + 2*cos(400*pi*t) + cos(800*pi*t); % Mensaje
+c = cos(3600*pi*t); % Portadora
+
+figure(1)
+subplot(2,1,1)
+plot(t,m)
+grid on
+title('Señal de Mensaje m(t)')
+subplot(2,1,2)
+plot(t,c)
+axis([-0.005,0.005,-1,1])
+grid on
+title('Señal de portadora c(t)')
+
+%% B. Muestrear las señales analogicas $$ m(t) $$ y $$ c(t) $$ utilizando $$ f_s = 9000hz $$  desde $$ -100 \leq{}t\leq{100} $$ para  m(n) y c(n)
+
+n = -100:100;
+fs = 9000;
+Ts = 1/fs;
+m_n = 5*cos(200*pi*n*Ts) + 2*cos(400*pi*n*Ts) + cos(800*pi*n*Ts); % Mensaje
+c_n = cos(3600*pi*n*Ts); % Portadora
+
+%% C.	Graficar las señales c(n) y m(t)  en tiempo discreto.
+
+        figure(2)
+        subplot(211)
+            stem(n,m_n,'r')
+                title('Señal m(n) en tiempo discreto ')
+        subplot(212)
+            stem(n,c_n,'r')
+                title('Señal c(n) en tiempo discreto')
+
+
+%% D. Calcular (numéricamente) la transformada de Fourier de m(t) y  c(t) utilizando las muestras obtenidas m(n) y c(n)  y graficar los espectros de magnitud (espectros continuos). Mostrar en el eje horizontal las frecuencias reales de las señales en Hz.
+
+w = -pi:0.01:pi;
+M = 0;
+C = 0;
+
+for nn = n
+    M = M + m(nn + 101)*exp(-1i*w*nn); % Transformada de Fourier
+end
+
+    figure(3)
+
+    plot(w*4500/pi, abs(M), 'm')
+            title('Espectro de magnitud del mensaje m(t)')
+             ylabel ('n'); 
+             xlabel ('|M(n)|');
+% Trasformada de Fourier con la Portadora c(t)
+
+for kk = n
+    C= C + c(kk + 101)*exp(-1i*w*kk); % Transformada de Fourier
+end
+
+figure(4)
+        plot(w*4500/pi, abs(C),'g')    %% Para ver las frecuencias reales de las señales en Hz
+            title('Espectro de magnitud de la portadora c(t)')
+             ylabel ('n'); 
+             xlabel ('|C(n)|');
+
+%% E. Obtener la señal modulada y(n) = m(n)*c(n) y graficar la señal en tiempo D.
+
+y_n = m_n.*c_n; % Señal modulada Tiempo Discreto
+y_t = m.*c;    % Señal modulada Tiempo Continuo
+            figure(5)
+                subplot(2,1,1)
+                     stem(n,y_n,'r')
+                title('Señal modulada y(n)')
+                 ylabel ('n'); 
+                     xlabel ('y(n)=m(n)*c(n)');
+                subplot(2,1,2)
+                     plot(t,y_t,'r')
+                    title('Señal modulada y(t)')
+                    ylabel ('t'); 
+                    xlabel ('y(t)=m(t)*c(t)');
+
+%% F. Calcular (numéricamente) la transformada de Fourier de y(t)  usando las muestras y(n) y graficar el espectro de magnitud. Mostrar en el eje horizontal las frecuencias reales de las señales en Hz.
+
+Y=0;
+
+for oo = n
+    Y = Y + y_t(oo + 101)*exp(-1i*w*oo); % Transformada de Fourier
+end
+
+    figure(6)
+                plot(w*4500/pi, abs(Y),'g')    %% Para ver las frecuencias reales de las señales en Hz
+                        title('Espectro de magnitud de la señal modulada y(w)')
+                                 ylabel ('n'); 
+                                 xlabel ('|Y(w)|');
+  %% Demodulacion 
+  %% G. Obtener la señal r(n) = y(n)c(n) y graficar en tiempo discreto
+  
+
+r_n = y_n.*c_n;
+
+            figure(7)
+              stem(n, r_n)
+                title('Señal a la salida del receptor r(n)')                     
+                                 ylabel ('n'); 
+                                 xlabel ('r(n) = y(n)*c(n)');
+                                 
+  %% H.	Graficar el espectro de magnitud de r(n) 
+  
+ R_N=0;
+
+for rr = n
+    R_N = R_N + r_n(rr + 101)*exp(-1i*w*rr); 
+end
+
+        figure(8)
+            plot(w*4500/pi, abs(R_N),'r')    
+                title('Espectro de magnitud de la señal r(n)')
+                                 ylabel ('n'); 
+                                 xlabel ('R(W)');
+                                 
+                      
+  %% I.	Eliminar las bandas laterales de r(n)  mediante un filtro FIR simétrico con M=100, obteniendo la señal  m2(n)
+    
+                M = 100;
+                 aux = zeros(1,38);
+                    Hr = [1 1 1 1 1 1 1 1 1 1 0.8 0.5 aux];
+                         A = ank(M);
+                             h = inv(A)*Hr';
+                                 Hw = 0;
+                                     w1=-pi:0.01:pi;
+
+for n = 0:((M/2)-1)
+    Hw = Hw + 2*cos(((M-1)/2-n).*w1)*h(n+1);
+end
+
+        figure(9)
+            plot(w1*2000/pi, 20*log10(abs(Hw)),'r');
+                title('Respuesta en frecuencia del filtro')
+                    h = [h; flipud(h)];
+
+        figure(10)
+            stem(h,'m')
+                title('Respuesta al impulso del filtro')
+%% J.	Graficar  la señal m2  y su espectro de magnitud.
+
+
+
+            m2n = R_N.*Hw;    
+            m2 = conv(r_n,h);   
+
+                            figure(11)
+                            subplot(2,1,1)
+                            plot(m_n,'r')
+                            title('Señal Transmitida')
+                            subplot(2,1,2)
+                            plot(m2,'g')
+                            title('Señal Recuperada = m(n)')
+
+                    figure(12)
+                    subplot(3,1,1)
+                    plot(w*4500/pi, abs(R_N),'m')    
+                    title('Espectro de magnitud de la señal modulada r(n)')
+
+                        subplot(3,1,2)
+                        plot(w1*2000/pi, 20*log10(abs(Hw)),'m');
+                        title('Respuesta en frecuencia del filtro pasabajas')
+                        axis([-2000 2000 -80 20]);
+
+                    subplot(3,1,3)
+                    plot(w*4500/pi, abs(m2n),'m');
+                    title('Espectro de la señal a la salida del filtro FIR (Señal recuperada)')
+                    
+                    
+                  
+ %%  2.	Simular un sistema de modulación y demodulación SSB-SC (Banda lateral única con portadora suprimida).
+% a.	Repetir los pasos (a)- (f) del problema (1).
+        
+ %% b.	Utilizando un filtro FIR de fase lineal antisimétrico con M=101, eliminar las bandas laterales superiores para obtener la señal  $$ y_{ssb} (n)$$        
+       
+ 
+ 
+M1 = 101;
+B = bnk(M1);
+w2 = -pi:0.01:pi;
+
+Im_par=[zeros(1,7) .1 .5 .9 ones(1,8) .9 .5 .1 zeros(1,29)];
+
+h_impar = inv(B)*Im_par';
+h2 = [h_impar;0;-flipud(h_impar)];
+
+
+
+H_rim = 0;
+
+ for j=0:(M1-1)/2 
+     H_rim = H_rim + 2*sin(((M1-1)/2-j).*w2)*h2(j+1);
+ end
+ 
+            figure(13)
+                hold on
+                        plot(w2*2000/pi, 20*log10(abs(H_rim)),'r') 
+                            title('H(w) Antisimetrico Impar')
+                                   axis([-2000 2000 -90 10]);
+                                   
+                                   
+
+%% c. Graficar la señal yssb(n) y su espectro de magnitud
+
+            yss_bn = conv(y_n,h2);
+             yss_bn = yss_bn(50:250);
+                 z = -100:100;
+
+    figure(14)
+        stem(z, yss_bn)
+            title('Señal yssb(n)')
+
+yss_bw = H_rim.*Y;
+
+        figure(15)
+            subplot(2,1,1)
+                plot(w*4500/pi, abs(yss_bw))
+                    title('Espectro de la señal SSB-SC yssb(n)')
+                    
+                    
+            subplot(2,1,2)
+                    plot(w*4500/pi, abs(Y))
+                        title('Espectro de magnitud de la señal modulada y(t)')
+    
+%% Demodulacion de la señal SSB-SC
+
+% g. Obtener la señal r(n) = yssb(n)c(n) y graficar en tiempo discreto
+
+        r2_n = yss_bn.*c_n;
+
+            figure(16)
+            stem(z,r2_n)
+            title('Señal r(n) = y(n)c(n)')
+
+% H. Espectro de R2n
+
+        figure(17)
+        f=linspace(-fs/2,fs/2,1000);
+        R_2=fftshift(fft(r2_n,1000));
+
+            plot(f,abs(R_2),'g');
+                    title('Rssb(w)')
+
+%% I y J. Elimninar las bandas laterales.
+
+            mensb = conv(r2_n,h);
+                m_rec = mensb(50:250);
+
+
+                figure(18)
+                    subplot(2,1,1)
+                        plot(m_n,'m')
+                    title('Señal Transmitida')
+                        subplot(2,1,2)
+                            plot(m_rec,'m')
+                    title('Señal Demodulada')
+
+            M2 = fftshift(fft(m_rec,1000));
+        f2 = linspace(-fs/2,fs/2,length(M2)); 
+
+        figure(19)
+        plot(f2, abs(M2),'r')
+        title('Espectro de la señal recibida de (yssb(n))')
+%% FUNCIONES UTILIZADAS 
+
+% function [A]= ank(M)
+%par , M numero de muestras
+
+% if((-1).^M)==1
+    
+% for k=0:(M/2-1)
+  %  w(k+1)=((2*pi)/M)*(k);                          %matlab no inicia en 0 (2*pi*k)/M ,, renglon REPLACE_WITH_DASH_DASH>
+    
+  %  for n=0:1:(M/2-1)
+  %      A(k+1,n+1)=2*cos(((M-1)./2-(n))*w(k+1));    %columna
+ %   end
+    
+%end
+%end 
+
+%Impar
+%  if((-1).^M)==-1
+%    for kk=0:((M-1)/2)
+         
+%        w(kk+1)=((2*pi)/M)*(kk);
+         
+  %      for nn=0:1:((M-1)/2)
+ %         if(nn==(M-1)/2)                           % si llega al ultimo valor, osea el limite
+%             A(kk+1,nn+1)=1;                        % habra un 1 en la ultima columna, para saber
+             
+%Impar
+%        else
+%           A(kk+1,nn+1)=2.*cos(((M-1)./2-(nn)).*w(kk+1));   
+%         end
+%        end
+%   end
+%end        
+%A
+%end
+
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH%
+
+
+% function [B]= bnk(M)
+%par
+
+% if((-1).^M)==1
+    
+ %   for n=0:1:((M/2)-1)
+  %      w(n+1)=((2*pi)./M)*(n+1/2);
+   %     for k=0:1:((M/2)-1)
+     %       B(n+1,k+1)=2*sin(((M-1)./2-k)*w(n+1));
+    %    end
+  %  end
+% end
+
+%impar
+% if((-1).^M)==-1
+   
+ %   for nn=0:1:(((M-1)./2)-1)% 5-1/2 -1 sera una matriz de 0 a 1 2x2
+  %      w(nn+1)=(((2*pi)./M)*(nn+1/2));
+   %     for kk=0:1:(((M-1)./2)-1)
+    %        B(nn+1,kk+1)=2*sin((((M-1)./2)-kk)*w(nn+1));
+     %   end
+    % end
+% end
+ 
+
+% end
+
+
+
+##### SOURCE END #####
+--></body></html>
